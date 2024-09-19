@@ -1,0 +1,19 @@
+.burgerConstructor {
+    min-width: 50%;
+    text-align: left;
+    background-color: #131316;
+}
+
+.constructorItems {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    text-align: center;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.constructorBottom {
+    text-align: right;
+}

@@ -1,0 +1,17 @@
+.burgerIngredients {
+    /*max-width: 60%;*/
+    text-align: left;
+    background-color: #131316;
+
+}
+
+.ingredientsItems {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+    text-align: center;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
