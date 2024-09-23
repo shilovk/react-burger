@@ -1,4 +1,14 @@
-.headerItem {
-    display: flex;
-    align-items: center;
+.header-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.header-item__icon {
+  /* Стили для иконки */
+}
+
+.header-item__title {
+  padding-left: 10px;
 }

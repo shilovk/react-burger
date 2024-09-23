@@ -1,3 +1,11 @@
-.constructorItem {
-    min-width: 100%;
+.constructor-item {
+  min-width: 100%;
+}
+
+.constructor-item__drag-icon {
+  margin-right: 10px;
+}
+
+.constructor-item__element {
+  /* Стили для элемента ConstructorElement */
 }

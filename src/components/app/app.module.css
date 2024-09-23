@@ -1,0 +1,40 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app__main {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.app__section {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.burger-ingredients {
+  composes: app__section;
+}
+
+.burger-constructor {
+  composes: app__section;
+}
+
+.app__section:last-child {
+  margin-right: 0;
+}
+
+@media (max-width <= 768px) {
+  .app__main {
+    flex-direction: column;
+  }
+
+  .app__section {
+    margin-right: 0;
+  }
+}

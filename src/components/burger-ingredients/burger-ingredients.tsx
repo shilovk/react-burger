@@ -1,47 +1,62 @@
-import React from "react";
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState } from "react";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
-import IngridientsItem from "./ingridients-item/ingridients-item";
+import IngredientsItem from "./ingridients-item/ingredients-item";
 import { data } from "../../utils/data";
 
 interface Ingredient {
-    _id: string;
-    name: string;
-    price: number;
-    image_large: string;
+  _id: string;
+  name: string;
+  type: string;
+  price: number;
+  image_large: string;
 }
 
 function BurgerIngredients() {
-    const [current, setCurrent] = React.useState('one');
+  const [current, setCurrent] = useState("bun");
 
-    return (
-        <p className={`${styles.burgerIngredients} pl-10 pt-5`}>
-            <p className="text text_type_main-medium pt-5 pb-5">
-                Соберите бургер
-            </p>
-            <p style={{display: 'flex'}}>
-                <Tab value="one" active={current === 'one'} onClick={() => setCurrent('one')}>
-                    Булки
-                </Tab>
-                <Tab value="two" active={current === 'two'} onClick={() => setCurrent('two')}>
-                    Соусы
-                </Tab>
-                <Tab value="three" active={current === 'three'} onClick={() => setCurrent('three')}>
-                    Начинки
-                </Tab>
-            </p>
-            <p className={styles.ingredientsItems}>
-                {data.map((item: Ingredient) => (
-                    <IngridientsItem
-                        key={item._id}
-                        name={item.name}
-                        price={item.price}
-                        image_large={item.image_large}
-                    />
-                ))}
-            </p>
-        </p>
-    );
+  const filteredIngredients = data.filter(
+    (item: Ingredient) => item.type === current,
+  );
+
+  return (
+    <section className={styles["burger-ingredients"]}>
+      <h2 className="text text_type_main-medium pt-5 pb-5">Соберите бургер</h2>
+      <div className={styles["burger-ingredients__tabs"]}>
+        <Tab
+          value="bun"
+          active={current === "bun"}
+          onClick={() => setCurrent("bun")}
+        >
+          Булки
+        </Tab>
+        <Tab
+          value="sauce"
+          active={current === "sauce"}
+          onClick={() => setCurrent("sauce")}
+        >
+          Соусы
+        </Tab>
+        <Tab
+          value="main"
+          active={current === "main"}
+          onClick={() => setCurrent("main")}
+        >
+          Начинки
+        </Tab>
+      </div>
+      <div className={styles["burger-ingredients__items"]}>
+        {filteredIngredients.map((item: Ingredient) => (
+          <IngredientsItem
+            key={item._id}
+            name={item.name}
+            price={item.price}
+            image_large={item.image_large}
+          />
+        ))}
+      </div>
+    </section>
+  );
 }
 
 export default BurgerIngredients;
