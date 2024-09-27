@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./burger-constructor.module.css";
 import ConstructorItem from "./constructor-item/constructor-item";
-import { data } from "../../utils/data";
 import {
   Button,
   CurrencyIcon,
@@ -14,8 +13,12 @@ interface Ingredient {
   image_large: string;
 }
 
-function BurgerConstructor() {
-  const totalPrice = data.reduce(
+interface Props {
+  ingredients: Ingredient[];
+}
+
+function BurgerConstructor({ ingredients }: Props) {
+  const totalPrice = ingredients.reduce(
     (acc: number, item: Ingredient) => acc + item.price,
     0,
   );
@@ -23,7 +26,7 @@ function BurgerConstructor() {
   return (
     <section className={`${styles["burger-constructor"]} pt-20`}>
       <div className={styles["burger-constructor__items"]}>
-        {data.map((item: Ingredient) => (
+        {ingredients.map((item: Ingredient) => (
           <ConstructorItem
             type={"top"}
             isLocked={true}

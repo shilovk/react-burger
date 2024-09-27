@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 import IngredientsItem from "./ingridients-item/ingredients-item";
-import { data } from "../../utils/data";
 
 interface Ingredient {
   _id: string;
@@ -12,10 +11,14 @@ interface Ingredient {
   image_large: string;
 }
 
-function BurgerIngredients() {
+interface Props {
+  ingredients: Ingredient[];
+}
+
+function BurgerIngredients({ ingredients }: Props) {
   const [current, setCurrent] = useState("bun");
 
-  const filteredIngredients = data.filter(
+  const filteredIngredients = ingredients.filter(
     (item: Ingredient) => item.type === current,
   );
 
