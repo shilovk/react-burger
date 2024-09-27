@@ -1,0 +1,37 @@
+.ingredient-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.ingredient-details__image {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.ingredient-details__name {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.ingredient-details__nutrition {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.ingredient-details__nutritionItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 7rem;
+}
+
+.ingredient-details__description {
+  margin-top: 1rem;
+  text-align: center;
+}

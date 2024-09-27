@@ -1,9 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./ingredients-item.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { IngredientsItemProps } from "./ingredients-item.types";
 
-function IngredientsItem({ name, price, image_large }) {
+const IngredientsItem = ({
+  name,
+  price,
+  image_large,
+}: IngredientsItemProps) => {
   return (
     <div className={`${styles["ingredients-item"]} pt-5`}>
       <img
@@ -24,12 +28,6 @@ function IngredientsItem({ name, price, image_large }) {
       </div>
     </div>
   );
-}
-
-IngredientsItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image_large: PropTypes.string.isRequired,
 };
 
 export default IngredientsItem;

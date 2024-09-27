@@ -1,19 +1,25 @@
 .burger-constructor {
-  min-width: 50%;
+  min-width: 60%;
   text-align: left;
   background-color: #131316;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.burger-constructor__bun {
+  position: relative;
+  z-index: 1;
 }
 
 .burger-constructor__items {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  text-align: center;
-  max-height: 500px;
+  max-height: 400px;
   overflow-y: auto;
-  padding-right: 10px;
 }
 
 .burger-constructor__bottom {
+  display: flex;
   text-align: right;
+  margin-top: auto;
 }

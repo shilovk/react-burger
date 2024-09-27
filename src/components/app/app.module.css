@@ -7,7 +7,6 @@
 .app__main {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
   flex: 1;
   overflow-y: auto;
 }

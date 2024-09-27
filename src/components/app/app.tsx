@@ -10,6 +10,22 @@ function App() {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [selectedIngredientIds] = useState<string[]>([
+    "643d69a5c3f7b9001cfa0942",
+    "643d69a5c3f7b9001cfa0944",
+    "643d69a5c3f7b9001cfa0945",
+    "643d69a5c3f7b9001cfa0946",
+    "643d69a5c3f7b9001cfa0940",
+    "643d69a5c3f7b9001cfa0947",
+    "643d69a5c3f7b9001cfa0949",
+  ]);
+  const [selectedBunId] = useState<string>("643d69a5c3f7b9001cfa093c");
+  const [orderNumber, setOrderNumber] = useState<string | null>(null); // Для хранения номера заказа
+
+  const generateOrderNumber = () => {
+    const randomOrderNumber = Math.floor(Math.random() * 100000).toString();
+    setOrderNumber(randomOrderNumber);
+  };
 
   useEffect(() => {
     fetch(API_URL)
@@ -41,12 +57,18 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={styles.app__main}>
+      <main className={`${styles.app__main} pl-5 pr-5`}>
         <div className={styles["burger-ingredients"]}>
           <BurgerIngredients ingredients={ingredients} />
         </div>
         <div className={styles["burger-constructor"]}>
-          <BurgerConstructor ingredients={ingredients} />
+          <BurgerConstructor
+            ingredients={ingredients}
+            selectedIds={selectedIngredientIds}
+            selectedBunId={selectedBunId}
+            onOrder={generateOrderNumber}
+            orderNumber={orderNumber}
+          />
         </div>
       </main>
     </div>
