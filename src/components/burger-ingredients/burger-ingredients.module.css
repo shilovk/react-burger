@@ -8,12 +8,13 @@
 }
 
 .burger-ingredients__items {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 5px;
-  text-align: center;
   max-height: 600px;
   overflow-y: auto;
   padding-right: 10px;
+}
+
+.burger-ingredients__category {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }

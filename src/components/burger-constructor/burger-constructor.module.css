@@ -1,11 +1,9 @@
 .burger-constructor {
-  min-width: 60%;
-  text-align: left;
+  text-align: right;
   background-color: #131316;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
 }
 
 .burger-constructor__bun {
@@ -14,12 +12,14 @@
 }
 
 .burger-constructor__items {
-  max-height: 400px;
+  max-height: 350px;
   overflow-y: auto;
 }
 
 .burger-constructor__bottom {
   display: flex;
-  text-align: right;
+  justify-content: right;
+  align-items: center;
   margin-top: auto;
+  text-align: center;
 }

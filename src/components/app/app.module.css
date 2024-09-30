@@ -5,35 +5,22 @@
 }
 
 .app__main {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
+  padding: 0 10px;
 }
 
-.app__section {
-  flex: 1;
-  margin-right: 10px;
-}
-
-.burger-ingredients {
-  composes: app__section;
-}
-
+.burger-ingredients,
 .burger-constructor {
-  composes: app__section;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
-.app__section:last-child {
-  margin-right: 0;
-}
-
-@media (max-width <= 768px) {
+@media (max-width: 768px) {
   .app__main {
-    flex-direction: column;
-  }
-
-  .app__section {
-    margin-right: 0;
+    grid-template-columns: 1fr;
   }
 }

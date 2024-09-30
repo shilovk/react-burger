@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styles from "./burger-constructor.module.css";
 import ConstructorItem from "./constructor-item/constructor-item";
 import {
@@ -24,32 +24,38 @@ function BurgerConstructor({
   onOrder,
   orderNumber,
 }: BurgerConstructorProps) {
-  const bun = ingredients.find(
-    (ingredient) => ingredient._id === selectedBunId,
-  );
-  const selectedIngredients = ingredients.filter((ingredient) =>
-    selectedIds.includes(ingredient._id),
-  );
+  const bun = useMemo(() => {
+    return ingredients.find((ingredient) => ingredient._id === selectedBunId);
+  }, [ingredients, selectedBunId]);
 
-  const [totalPrice] = useState(
-    (bun ? bun.price * 2 : 0) +
-      selectedIngredients.reduce((acc, item) => acc + item.price, 0),
-  );
+  const selectedIngredients = useMemo(() => {
+    return ingredients.filter((ingredient) =>
+      selectedIds.includes(ingredient._id),
+    );
+  }, [ingredients, selectedIds]);
+
+  const totalPrice = useMemo(() => {
+    return (
+      (bun ? bun.price * 2 : 0) +
+      selectedIngredients.reduce((acc, item) => acc + item.price, 0)
+    );
+  }, [bun, selectedIngredients]);
+
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
+  const openModal = () => {
     onOrder();
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setModalOpen(false);
   };
 
   return (
     <section className={`${styles["burger-constructor"]} pt-20`}>
       {bun && (
-        <div className={`${styles["burger-constructor__bun"]} pl-9 pb-5`}>
+        <div className={`${styles["burger-constructor__bun"]} pb-2 pr-3`}>
           <ConstructorElement
             type="top"
             isLocked={true}
@@ -70,12 +76,13 @@ function BurgerConstructor({
             price={item.price}
             thumbnail={item.image_large}
             dragIcon={true}
+            extraClass="pb-2"
           />
         ))}
       </div>
 
       {bun && (
-        <div className={`${styles["burger-constructor__bun"]} pl-9`}>
+        <div className={`${styles["burger-constructor__bun"]} pr-3`}>
           <ConstructorElement
             type="bottom"
             isLocked={true}
@@ -86,22 +93,22 @@ function BurgerConstructor({
         </div>
       )}
 
-      <div className={`${styles["burger-constructor__bottom"]} pl-30`}>
-        <div className="text text_type_digits-medium ">{totalPrice}</div>
+      <div className={`${styles["burger-constructor__bottom"]} pt-5 pr-3`}>
+        <div className="text text_type_digits-medium">{totalPrice}</div>
         <CurrencyIcon className="pl-2" type="primary" />
         <Button
           htmlType="button"
           type="primary"
-          size="small"
-          extraClass="ml-2"
-          onClick={handleOpenModal}
+          size="medium"
+          extraClass="ml-7"
+          onClick={openModal}
         >
           <span className="text text_type_main-small">Оформить заказ</span>
         </Button>
       </div>
 
       {isModalOpen && orderNumber && (
-        <Modal title="Детали заказа" onClose={handleCloseModal}>
+        <Modal title="Детали заказа" onClose={closeModal}>
           <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}

@@ -9,7 +9,7 @@ const IngredientsItem = ({
   image_large,
 }: IngredientsItemProps) => {
   return (
-    <div className={`${styles["ingredients-item"]} pt-5`}>
+    <div className={`${styles["ingredients-item"]}`}>
       <img
         className={styles["ingredients-item__image"]}
         src={image_large}

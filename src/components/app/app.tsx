@@ -20,7 +20,7 @@ function App() {
     "643d69a5c3f7b9001cfa0949",
   ]);
   const [selectedBunId] = useState<string>("643d69a5c3f7b9001cfa093c");
-  const [orderNumber, setOrderNumber] = useState<string | null>(null); // Для хранения номера заказа
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const generateOrderNumber = () => {
     const randomOrderNumber = Math.floor(Math.random() * 100000).toString();
@@ -57,7 +57,7 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={`${styles.app__main} pl-5 pr-5`}>
+      <main className={`${styles.app__main} pl-10 pr-7`}>
         <div className={styles["burger-ingredients"]}>
           <BurgerIngredients ingredients={ingredients} />
         </div>

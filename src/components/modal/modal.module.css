@@ -2,7 +2,7 @@
   background: #131313;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 10%);
   width: 100%;
   max-width: 600px;
   z-index: 1050;

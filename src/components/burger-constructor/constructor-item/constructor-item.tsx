@@ -13,22 +13,17 @@ const ConstructorItem = ({
   type,
   isLocked,
   dragIcon,
+  extraClass,
 }: ConstructorItemProps) => {
   return (
-    <div className={`${styles["constructor-item"]} pb-5`}>
-      {dragIcon && (
-        <DragIcon
-          type="primary"
-          className={styles["constructor-item__drag-icon"]}
-        />
-      )}
+    <div className={`${styles["constructor-item"]} ${extraClass}`}>
+      {dragIcon && <DragIcon type="primary" className="pr-5" />}
       <ConstructorElement
         type={type}
         isLocked={isLocked}
         text={text}
         price={price}
         thumbnail={thumbnail}
-        extraClass={styles["constructor-item__element"]}
       />
     </div>
   );

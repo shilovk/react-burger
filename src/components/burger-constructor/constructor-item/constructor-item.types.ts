@@ -5,4 +5,5 @@ export interface ConstructorItemProps {
   type: "top" | "bottom" | undefined; // Тип для type
   isLocked: boolean;
   dragIcon?: boolean;
+  extraClass?: string;
 }
