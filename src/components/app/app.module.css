@@ -1,0 +1,26 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app__main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.burger-ingredients,
+.burger-constructor {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+@media (max-width: 768px) {
+  .app__main {
+    grid-template-columns: 1fr;
+  }
+}

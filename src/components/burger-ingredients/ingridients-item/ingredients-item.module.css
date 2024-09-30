@@ -1,0 +1,20 @@
+.ingredients-item {
+  text-align: center;
+}
+
+.ingredients-item__image {
+  width: 60%;
+  height: auto;
+  object-fit: cover;
+}
+
+.ingredients-item__price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.ingredients-item__name {
+  margin-top: 10px;
+}

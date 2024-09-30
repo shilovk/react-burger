@@ -1,0 +1,20 @@
+.burger-ingredients {
+  text-align: left;
+  background-color: #131316;
+}
+
+.burger-ingredients__tabs {
+  display: flex;
+}
+
+.burger-ingredients__items {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.burger-ingredients__category {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}

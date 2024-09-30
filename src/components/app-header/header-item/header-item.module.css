@@ -1,0 +1,10 @@
+.header-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.header-item__title {
+  padding-left: 10px;
+}
