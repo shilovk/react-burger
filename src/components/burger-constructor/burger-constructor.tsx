@@ -1,50 +1,94 @@
-import React, { useState, useMemo } from "react";
-import styles from "./burger-constructor.module.css";
+import React, { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
+import { RootState } from "../../services/reducers/reducers";
+import {
+  addIngredient,
+  setBun,
+  removeIngredient,
+  reorderIngredients,
+} from "../../services/actions/burger-constructor";
 import ConstructorItem from "./constructor-item/constructor-item";
+import styles from "./burger-constructor.module.css";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 import {
   Button,
   CurrencyIcon,
-  ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
-import { IngredientProps } from "./burger-constructor.types";
+import { Ingredient } from "../../services/actions/burger-constructor";
+import { createOrder } from "../../services/actions/order";
 
-interface BurgerConstructorProps extends IngredientProps {
-  selectedIds: string[];
-  selectedBunId: string;
-  onOrder: () => void;
-  orderNumber: string | null;
-}
+const BurgerConstructor = () => {
+  const dispatch = useDispatch();
+  const { ingredients, bun } = useSelector(
+    (state: RootState) => state.burgerConstructor,
+  );
 
-function BurgerConstructor({
-  ingredients,
-  selectedIds,
-  selectedBunId,
-  onOrder,
-  orderNumber,
-}: BurgerConstructorProps) {
-  const bun = useMemo(() => {
-    return ingredients.find((ingredient) => ingredient._id === selectedBunId);
-  }, [ingredients, selectedBunId]);
-
-  const selectedIngredients = useMemo(() => {
-    return ingredients.filter((ingredient) =>
-      selectedIds.includes(ingredient._id),
-    );
-  }, [ingredients, selectedIds]);
-
-  const totalPrice = useMemo(() => {
-    return (
-      (bun ? bun.price * 2 : 0) +
-      selectedIngredients.reduce((acc, item) => acc + item.price, 0)
-    );
-  }, [bun, selectedIngredients]);
+  const allIngredients: Ingredient[] = useSelector(
+    (state: RootState) => state.burgerIngredients.ingredients,
+  );
 
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
-    onOrder();
+  const [, dropBunTop] = useDrop({
+    accept: "bun",
+    drop: (item: { id: string }) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(setBun(item.id));
+    },
+  });
+
+  const [, dropBunBottom] = useDrop({
+    accept: "bun",
+    drop: (item: { id: string }) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(setBun(item.id));
+    },
+  });
+
+  const [, drop] = useDrop({
+    accept: ["sauce", "main"],
+    drop: (item: { id: string }) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addIngredient(item.id));
+    },
+  });
+
+  const selectedIngredients = useMemo<Ingredient[]>(() => {
+    return ingredients
+      .map((id: string) => allIngredients.find((item) => item._id === id))
+      .filter(
+        (item: Ingredient | undefined): item is Ingredient =>
+          item !== undefined,
+      );
+  }, [ingredients, allIngredients]);
+
+  const selectedBun = useMemo<Ingredient | null>(() => {
+    return allIngredients.find((item) => item._id === bun) || null;
+  }, [bun, allIngredients]);
+
+  const totalPrice = useMemo(() => {
+    return (
+      (selectedBun ? selectedBun.price * 2 : 0) +
+      selectedIngredients.reduce((acc, item) => acc + item.price, 0)
+    );
+  }, [selectedBun, selectedIngredients]);
+
+  const handleOrder = () => {
+    if (!selectedBun) {
+      alert("Пожалуйста, добавьте булку в заказ.");
+      return;
+    }
+
+    const ingredientIds = [selectedBun._id, ...ingredients, selectedBun._id];
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(createOrder(ingredientIds));
     setModalOpen(true);
   };
 
@@ -52,47 +96,67 @@ function BurgerConstructor({
     setModalOpen(false);
   };
 
+  const orderNumber = useSelector(
+    (state: RootState) => state.order.orderNumber,
+  );
+
+  const moveIngredient = (dragIndex: number, hoverIndex?: number) => {
+    if (hoverIndex === undefined) return;
+
+    dispatch(reorderIngredients(dragIndex, hoverIndex));
+  };
+
   return (
     <section className={`${styles["burger-constructor"]} pt-20`}>
-      {bun && (
-        <div className={`${styles["burger-constructor__bun"]} pb-2 pr-3`}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.image_large}
-          />
-        </div>
-      )}
-
-      <div className={styles["burger-constructor__items"]}>
-        {selectedIngredients.map((item) => (
+      <div ref={dropBunTop} className={styles["burger-constructor__bun"]}>
+        {selectedBun && (
           <ConstructorItem
-            key={item._id}
+            key={selectedBun._id}
+            type={"top"}
+            isLocked={true}
+            text={`${selectedBun.name} (верх)`}
+            price={selectedBun.price}
+            thumbnail={selectedBun.image}
+            dragIcon={false}
+            extraClass="pb-2 pr-3"
+          />
+        )}
+      </div>
+      <div ref={drop} className={styles["burger-constructor__items"]}>
+        {selectedIngredients.map((item, index) => (
+          <ConstructorItem
+            key={`${item._id}-${index}`}
+            index={index}
             type={undefined}
             isLocked={false}
             text={item.name}
             price={item.price}
-            thumbnail={item.image_large}
-            dragIcon={true}
+            thumbnail={item.image}
+            dragIcon
             extraClass="pb-2"
+            moveIngredient={moveIngredient}
+            onRemove={() => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              dispatch(removeIngredient(item._id));
+            }}
           />
         ))}
       </div>
-
-      {bun && (
-        <div className={`${styles["burger-constructor__bun"]} pr-3`}>
-          <ConstructorElement
-            type="bottom"
+      <div ref={dropBunBottom} className={styles["burger-constructor__bun"]}>
+        {selectedBun && (
+          <ConstructorItem
+            key={selectedBun._id}
+            type={"bottom"}
             isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.image_large}
+            text={`${selectedBun.name} (низ)`}
+            price={selectedBun.price}
+            thumbnail={selectedBun.image}
+            dragIcon={false}
+            extraClass="pb-2 pr-3"
           />
-        </div>
-      )}
-
+        )}
+      </div>
       <div className={`${styles["burger-constructor__bottom"]} pt-5 pr-3`}>
         <div className="text text_type_digits-medium">{totalPrice}</div>
         <CurrencyIcon className="pl-2" type="primary" />
@@ -101,19 +165,18 @@ function BurgerConstructor({
           type="primary"
           size="medium"
           extraClass="ml-7"
-          onClick={openModal}
+          onClick={handleOrder}
         >
           <span className="text text_type_main-small">Оформить заказ</span>
         </Button>
       </div>
-
       {isModalOpen && orderNumber && (
         <Modal title="Детали заказа" onClose={closeModal}>
-          <OrderDetails orderNumber={orderNumber} />
+          <OrderDetails orderNumber={orderNumber.toString()} />
         </Modal>
       )}
     </section>
   );
-}
+};
 
 export default BurgerConstructor;

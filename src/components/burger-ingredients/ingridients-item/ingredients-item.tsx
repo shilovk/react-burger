@@ -1,18 +1,22 @@
 import React from "react";
 import styles from "./ingredients-item.module.css";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsItemProps } from "./ingredients-item.types";
 
 const IngredientsItem = ({
   name,
   price,
-  image_large,
+  image,
+  count,
 }: IngredientsItemProps) => {
   return (
     <div className={`${styles["ingredients-item"]}`}>
       <img
         className={styles["ingredients-item__image"]}
-        src={image_large}
+        src={image}
         alt={name}
       />
       <div
@@ -26,6 +30,7 @@ const IngredientsItem = ({
       >
         {name}
       </div>
+      {count > 0 && <Counter count={count} size={"default"} />}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React from "react";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { OrderProps } from "./order-details.types";
-// import styles from "./order-details.module.css";
 
 const OrderDetails = ({ orderNumber }: OrderProps) => {
   return (

@@ -1,4 +1,4 @@
-export interface IngredientDetailsProps {
+export interface IngredientDetails {
   name: string;
   image: string;
   proteins: number;

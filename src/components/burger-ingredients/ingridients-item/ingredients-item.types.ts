@@ -1,5 +1,6 @@
 export interface IngredientsItemProps {
   name: string;
   price: number;
-  image_large: string;
+  image: string;
+  count: number;
 }

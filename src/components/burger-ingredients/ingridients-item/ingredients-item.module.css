@@ -1,5 +1,6 @@
 .ingredients-item {
   text-align: center;
+  position: relative;
 }
 
 .ingredients-item__image {

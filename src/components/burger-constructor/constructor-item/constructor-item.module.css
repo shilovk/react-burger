@@ -1,3 +1,10 @@
 .constructor-item {
   max-width: 98%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.constructor-element {
+  background-color: #1C1C21;
 }

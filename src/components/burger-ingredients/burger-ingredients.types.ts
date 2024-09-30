@@ -1,7 +1,7 @@
 export interface Ingredient {
   _id: string;
   name: string;
-  type: string;
+  type: "bun" | "sauce" | "main";
   proteins: number;
   fat: number;
   carbohydrates: number;
@@ -12,6 +12,7 @@ export interface Ingredient {
   image_large: string;
   __v: number;
   description?: string;
+  count?: number;
 }
 
 export interface IngredientsProps {
