@@ -25,6 +25,8 @@ const BurgerConstructor = () => {
     (state: RootState) => state.burgerConstructor,
   );
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const allIngredients: Ingredient[] = useSelector(
     (state: RootState) => state.burgerIngredients.ingredients,
   );
@@ -58,13 +60,21 @@ const BurgerConstructor = () => {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const selectedIngredients = useMemo<Ingredient[]>(() => {
     return ingredients
-      .map((id: string) => allIngredients.find((item) => item._id === id))
-      .filter(
-        (item: Ingredient | undefined): item is Ingredient =>
-          item !== undefined,
-      );
+      .map((ingredient) => {
+        // Найти объект ингредиента по id
+        const foundIngredient = allIngredients.find(
+          (item) => item._id === ingredient.id,
+        );
+        // Если найден, добавить uniqueId
+        return foundIngredient
+          ? { ...foundIngredient, uniqueId: ingredient.uniqueId }
+          : undefined;
+      })
+      .filter((item): item is Ingredient => !!item); // Фильтруем undefined
   }, [ingredients, allIngredients]);
 
   const selectedBun = useMemo<Ingredient | null>(() => {
@@ -84,7 +94,11 @@ const BurgerConstructor = () => {
       return;
     }
 
-    const ingredientIds = [selectedBun._id, ...ingredients, selectedBun._id];
+    const ingredientIds = [
+      selectedBun._id,
+      ...ingredients.map((ingredient) => ingredient.id),
+      selectedBun._id,
+    ];
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -125,7 +139,7 @@ const BurgerConstructor = () => {
       <div ref={drop} className={styles["burger-constructor__items"]}>
         {selectedIngredients.map((item, index) => (
           <ConstructorItem
-            key={`${item._id}-${index}`}
+            key={`${item.uniqueId}-${index}`}
             index={index}
             type={undefined}
             isLocked={false}

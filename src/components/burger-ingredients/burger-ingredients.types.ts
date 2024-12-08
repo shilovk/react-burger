@@ -14,7 +14,3 @@ export interface Ingredient {
   description?: string;
   count?: number;
 }
-
-export interface IngredientsProps {
-  ingredients: Ingredient[];
-}

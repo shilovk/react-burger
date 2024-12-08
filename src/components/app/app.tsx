@@ -40,7 +40,7 @@ function App() {
         <AppHeader />
         <main className={`${styles.app__main} pl-10 pr-7`}>
           <div className={styles["burger-ingredients"]}>
-            <BurgerIngredients ingredients={ingredients} />
+            <BurgerIngredients />
           </div>
           <div className={styles["burger-constructor"]}>
             <BurgerConstructor />

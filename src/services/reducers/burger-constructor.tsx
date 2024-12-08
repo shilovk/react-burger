@@ -3,10 +3,11 @@ import {
   REMOVE_INGREDIENT,
   SET_BUN,
   REORDER_INGREDIENTS,
+  CLEAR_CONSTRUCTOR,
 } from "../actions/burger-constructor";
 
 interface BurgerConstructorState {
-  ingredients: string[];
+  ingredients: { id: string; uniqueId: string }[];
   bun: string | null;
 }
 
@@ -59,6 +60,13 @@ export const burgerConstructorReducer = (
       const [movedItem] = updatedIngredients.splice(dragIndex, 1);
       updatedIngredients.splice(hoverIndex, 0, movedItem);
       return { ...state, ingredients: updatedIngredients };
+    }
+    case CLEAR_CONSTRUCTOR: {
+      return {
+        ...state,
+        ingredients: [],
+        bun: null,
+      };
     }
     default:
       return state;

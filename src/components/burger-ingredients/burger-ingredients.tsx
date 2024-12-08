@@ -11,7 +11,7 @@ import {
   clearIngredientDetails,
 } from "../../services/actions/ingredient-details";
 import { setTab } from "../../services/actions/tab";
-import { Ingredient, IngredientsProps } from "./burger-ingredients.types";
+import { Ingredient } from "./burger-ingredients.types";
 import { useDrag } from "react-dnd";
 
 const IngredientsItemDraggable = ({
@@ -41,12 +41,16 @@ const IngredientsItemDraggable = ({
   );
 };
 
-const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
+const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const ingredientDetails = useSelector(
     (state: RootState) => state.ingredientDetails.ingredient,
   );
   const tab = useSelector((state: RootState) => state.tab.title);
+
+  const ingredients = useSelector<RootState, Ingredient[]>(
+    (state) => state.burgerIngredients.ingredients,
+  );
 
   const bunRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);

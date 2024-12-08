@@ -1,11 +1,14 @@
-export const ADD_INGREDIENT = "ADD_INGREDIENT";
-export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
-export const SET_BUN = "SET_BUN";
-export const REORDER_INGREDIENTS = "REORDER_INGREDIENTS";
+import { v4 as uuidv4 } from "uuid";
 import {
   incrementIngredientCount,
   decrementIngredientCount,
 } from "./burger-ingredients";
+
+export const ADD_INGREDIENT = "ADD_INGREDIENT";
+export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
+export const SET_BUN = "SET_BUN";
+export const REORDER_INGREDIENTS = "REORDER_INGREDIENTS";
+export const CLEAR_CONSTRUCTOR = "CLEAR_CONSTRUCTOR";
 
 export interface Ingredient {
   _id: string;
@@ -19,11 +22,18 @@ export interface Ingredient {
   fat?: number;
   carbohydrates?: number;
   calories?: number;
+  uniqueId: string;
 }
 
 export const addIngredient = (id: string) => (dispatch: any) => {
   dispatch(incrementIngredientCount(id));
-  dispatch({ type: ADD_INGREDIENT, payload: id });
+  dispatch({
+    type: ADD_INGREDIENT,
+    payload: {
+      id,
+      uniqueId: uuidv4(),
+    },
+  });
 };
 
 export const removeIngredient = (id: string) => (dispatch: any) => {
@@ -45,4 +55,8 @@ export const setBun = (id: string) => (dispatch: any, getState: any) => {
 export const reorderIngredients = (dragIndex: number, hoverIndex: number) => ({
   type: REORDER_INGREDIENTS,
   payload: { dragIndex, hoverIndex },
+});
+
+export const clearConstructor = () => ({
+  type: CLEAR_CONSTRUCTOR,
 });

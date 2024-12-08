@@ -1,8 +1,12 @@
+import { BASE_URL } from "../../components/@types/api";
+import { checkResponse } from "../../utils/api";
+
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
 export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
 export const INCREMENT_INGREDIENT_COUNT = "INCREMENT_INGREDIENT_COUNT";
 export const DECREMENT_INGREDIENT_COUNT = "DECREMENT_INGREDIENT_COUNT";
+export const RESET_INGREDIENT_COUNTS = "RESET_INGREDIENT_COUNTS";
 
 export const incrementIngredientCount = (id: string, incrementBy = 1) => ({
   type: INCREMENT_INGREDIENT_COUNT,
@@ -20,19 +24,17 @@ export const getIngredients = () => {
   ) => {
     dispatch({ type: GET_INGREDIENTS_REQUEST });
 
-    try {
-      const response = await fetch(
-        "https://norma.nomoreparties.space/api/ingredients",
-      );
-      if (!response.ok) {
-        throw new Error("Ошибка при загрузке данных");
-      }
-      const data = await response.json();
-      dispatch({ type: GET_INGREDIENTS_SUCCESS, payload: data.data });
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      dispatch({ type: GET_INGREDIENTS_FAILED, error: error.message });
-    }
+    fetch(`${BASE_URL}/ingredients`)
+      .then(checkResponse)
+      .then((data) => {
+        dispatch({ type: GET_INGREDIENTS_SUCCESS, payload: data.data });
+      })
+      .catch((error) => {
+        dispatch({ type: GET_INGREDIENTS_FAILED, error: error.message });
+      });
   };
 };
+
+export const resetIngredientCounts = () => ({
+  type: RESET_INGREDIENT_COUNTS,
+});

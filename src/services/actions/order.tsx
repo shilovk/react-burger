@@ -1,7 +1,10 @@
-// actions/order.ts
+import { BASE_URL } from "../../components/@types/api";
+import { checkResponse } from "../../utils/api";
 import { Dispatch } from "redux";
 import { RootState } from "../reducers/reducers";
 import { ThunkAction } from "redux-thunk";
+import { clearConstructor } from "./burger-constructor";
+import { resetIngredientCounts } from "./burger-ingredients";
 
 export const CREATE_ORDER_SUCCESS = "CREATE_ORDER_SUCCESS";
 export const CREATE_ORDER_FAILURE = "CREATE_ORDER_FAILURE";
@@ -28,33 +31,35 @@ export type OrderActionTypes =
 export const createOrder = (
   ingredientIds: string[],
 ): ThunkAction<void, RootState, unknown, OrderActionTypes> => {
-  return async (dispatch: Dispatch<OrderActionTypes>) => {
+  return async (
+    dispatch: Dispatch<
+      | OrderActionTypes
+      | ReturnType<typeof clearConstructor>
+      | ReturnType<typeof resetIngredientCounts>
+    >,
+  ) => {
     dispatch({ type: CREATE_ORDER_REQUEST });
 
-    try {
-      const response = await fetch(
-        "https://norma.nomoreparties.space/api/orders",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ingredients: ingredientIds }),
-        },
-      );
+    fetch(`${BASE_URL}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ingredients: ingredientIds }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        dispatch({
+          type: CREATE_ORDER_SUCCESS,
+          payload: { orderNumber: data.order.number },
+        });
 
-      if (!response.ok) {
-        throw new Error("Ошибка при создании заказа");
-      }
-
-      const data = await response.json();
-
-      dispatch({
-        type: CREATE_ORDER_SUCCESS,
-        payload: data.order.number,
+        // Очистка конструктора и сброс счетчиков
+        dispatch(clearConstructor());
+        dispatch(resetIngredientCounts());
+      })
+      .catch(() => {
+        dispatch({ type: CREATE_ORDER_FAILURE });
       });
-    } catch (error) {
-      dispatch({ type: CREATE_ORDER_FAILURE });
-    }
   };
 };

@@ -4,6 +4,7 @@ import {
   GET_INGREDIENTS_FAILED,
   INCREMENT_INGREDIENT_COUNT,
   DECREMENT_INGREDIENT_COUNT,
+  RESET_INGREDIENT_COUNTS,
 } from "../actions/burger-ingredients";
 import { Ingredient } from "../../components/burger-ingredients/burger-ingredients.types";
 
@@ -91,6 +92,15 @@ export const burgerIngredientsReducer = (
           }
           return ingredient;
         }),
+      };
+    }
+    case RESET_INGREDIENT_COUNTS: {
+      return {
+        ...state,
+        ingredients: state.ingredients.map((ingredient) => ({
+          ...ingredient,
+          count: 0,
+        })),
       };
     }
     default: {

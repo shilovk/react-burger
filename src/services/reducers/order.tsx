@@ -21,7 +21,11 @@ export const orderReducer = (state = initialState, action: any): OrderState => {
     case CREATE_ORDER_REQUEST:
       return { ...state, isLoading: true, hasError: false };
     case CREATE_ORDER_SUCCESS:
-      return { ...state, isLoading: false, orderNumber: action.payload };
+      return {
+        ...state,
+        isLoading: false,
+        orderNumber: action.payload.orderNumber,
+      };
     case CREATE_ORDER_FAILURE:
       return { ...state, isLoading: false, hasError: true };
     default:
