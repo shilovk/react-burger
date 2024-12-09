@@ -139,7 +139,7 @@ const BurgerConstructor = () => {
       <div ref={drop} className={styles["burger-constructor__items"]}>
         {selectedIngredients.map((item, index) => (
           <ConstructorItem
-            key={`${item.uniqueId}-${index}`}
+            key={item.uniqueId}
             index={index}
             type={undefined}
             isLocked={false}
