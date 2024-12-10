@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ingredient-details.module.css";
-import { IngredientDetailsProps } from "./ingredient-details.types";
+import { IngredientDetails as IngredientDetailsProps } from "./ingredient-details.types";
 
 const IngredientDetails = ({
   name,

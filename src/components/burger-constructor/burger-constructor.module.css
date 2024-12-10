@@ -7,11 +7,11 @@
 }
 
 .burger-constructor__bun {
-  position: relative;
-  z-index: 1;
+  min-height: 100px;
 }
 
 .burger-constructor__items {
+  min-height: 100px;
   max-height: 350px;
   overflow-y: auto;
 }

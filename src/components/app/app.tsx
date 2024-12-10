@@ -1,50 +1,30 @@
-import React, { useEffect, useState } from "react";
+// components/App.tsx
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-
-const API_URL = "https://norma.nomoreparties.space/api/ingredients";
+import { getIngredients } from "../../services/actions/burger-ingredients";
+import { RootState } from "../../services/reducers/reducers";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [selectedIngredientIds] = useState<string[]>([
-    "643d69a5c3f7b9001cfa0942",
-    "643d69a5c3f7b9001cfa0944",
-    "643d69a5c3f7b9001cfa0945",
-    "643d69a5c3f7b9001cfa0946",
-    "643d69a5c3f7b9001cfa0940",
-    "643d69a5c3f7b9001cfa0947",
-    "643d69a5c3f7b9001cfa0949",
-  ]);
-  const [selectedBunId] = useState<string>("643d69a5c3f7b9001cfa093c");
-  const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { ingredients, isLoading, hasError } = useSelector(
+    (state: RootState) => state.burgerIngredients,
+  );
 
-  const generateOrderNumber = () => {
-    const randomOrderNumber = Math.floor(Math.random() * 100000).toString();
-    setOrderNumber(randomOrderNumber);
-  };
+  const isOrderLoading = useSelector(
+    (state: RootState) => state.order.isLoading,
+  );
+
+  const hasOrderError = useSelector((state: RootState) => state.order.hasError);
 
   useEffect(() => {
-    fetch(API_URL)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Ошибка при загрузке данных");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setIngredients(data.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Ошибка загрузки данных:", error);
-        setHasError(true);
-        setIsLoading(false);
-      });
-  }, []);
+    dispatch(getIngredients() as never);
+  }, [dispatch]);
 
   if (isLoading) {
     return <div>Загрузка...</div>;
@@ -55,23 +35,21 @@ function App() {
   }
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <main className={`${styles.app__main} pl-10 pr-7`}>
-        <div className={styles["burger-ingredients"]}>
-          <BurgerIngredients ingredients={ingredients} />
-        </div>
-        <div className={styles["burger-constructor"]}>
-          <BurgerConstructor
-            ingredients={ingredients}
-            selectedIds={selectedIngredientIds}
-            selectedBunId={selectedBunId}
-            onOrder={generateOrderNumber}
-            orderNumber={orderNumber}
-          />
-        </div>
-      </main>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className={styles.app}>
+        <AppHeader />
+        <main className={`${styles.app__main} pl-10 pr-7`}>
+          <div className={styles["burger-ingredients"]}>
+            <BurgerIngredients />
+          </div>
+          <div className={styles["burger-constructor"]}>
+            <BurgerConstructor />
+            {isOrderLoading && <div>Создание заказа...</div>}
+            {hasOrderError && <div>Ошибка при создании заказа</div>}
+          </div>
+        </main>
+      </div>
+    </DndProvider>
   );
 }
 

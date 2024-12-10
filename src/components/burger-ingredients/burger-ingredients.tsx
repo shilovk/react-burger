@@ -1,16 +1,56 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsItem from "./ingridients-item/ingredients-item";
 import IngredientDetails from "./ingredient-details/ingredient-details";
-import { Ingredient, IngredientsProps } from "./burger-ingredients.types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../services/reducers/reducers";
+import {
+  setIngredientDetails,
+  clearIngredientDetails,
+} from "../../services/actions/ingredient-details";
+import { setTab } from "../../services/actions/tab";
+import { Ingredient } from "./burger-ingredients.types";
+import { useDrag } from "react-dnd";
 
-const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
-  const [current, setCurrent] = useState("bun");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedIngredient, setSelectedIngredient] =
-    useState<Ingredient | null>(null);
+const IngredientsItemDraggable = ({
+  ingredient,
+}: {
+  ingredient: Ingredient;
+}) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: ingredient.type,
+    item: { id: ingredient._id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0.5 : 1;
+
+  return (
+    <div ref={drag} style={{ opacity }} className={styles["ingredient-item"]}>
+      <IngredientsItem
+        name={ingredient.name}
+        price={ingredient.price}
+        image={ingredient.image}
+        count={ingredient.count || 0}
+      />
+    </div>
+  );
+};
+
+const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+  const ingredientDetails = useSelector(
+    (state: RootState) => state.ingredientDetails.ingredient,
+  );
+  const tab = useSelector((state: RootState) => state.tab.title);
+
+  const ingredients = useSelector<RootState, Ingredient[]>(
+    (state) => state.burgerIngredients.ingredients,
+  );
 
   const bunRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
@@ -18,32 +58,29 @@ const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const openModal = (ingredient: Ingredient) => {
-    setSelectedIngredient(ingredient);
-    setIsModalOpen(true);
+    dispatch(setIngredientDetails(ingredient));
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    dispatch(clearIngredientDetails());
   };
 
   const handleScroll = () => {
     const container = containerRef.current;
-
     if (container && bunRef.current && sauceRef.current && mainRef.current) {
       const bunPos = bunRef.current.getBoundingClientRect().top;
       const saucePos = sauceRef.current.getBoundingClientRect().top;
       const mainPos = mainRef.current.getBoundingClientRect().top;
-
       const containerTop = container.getBoundingClientRect().top;
 
       if (Math.abs(bunPos - containerTop) < Math.abs(saucePos - containerTop)) {
-        setCurrent("bun");
+        dispatch(setTab("bun"));
       } else if (
         Math.abs(saucePos - containerTop) < Math.abs(mainPos - containerTop)
       ) {
-        setCurrent("sauce");
+        dispatch(setTab("sauce"));
       } else {
-        setCurrent("main");
+        dispatch(setTab("main"));
       }
     }
   };
@@ -56,14 +93,13 @@ const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
     }
   }, []);
 
-  const scrollToSection = (section: string) => {
-    setCurrent(section);
-
-    if (section === "bun" && bunRef.current) {
+  const scrollToTab = (tab: string) => {
+    dispatch(setTab(tab));
+    if (tab === "bun" && bunRef.current) {
       bunRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (section === "sauce" && sauceRef.current) {
+    } else if (tab === "sauce" && sauceRef.current) {
       sauceRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (section === "main" && mainRef.current) {
+    } else if (tab === "main" && mainRef.current) {
       mainRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -90,26 +126,26 @@ const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
 
   return (
     <section className={styles["burger-ingredients"]}>
-      <div className="text text_type_main-medium pt-5">Соберите бургер</div>
+      <div className="text text_type_main-large pt-7 pb-5">Соберите бургер</div>
       <div className={styles["burger-ingredients__tabs"]}>
         <Tab
           value="bun"
-          active={current === "bun"}
-          onClick={() => scrollToSection("bun")}
+          active={tab === "bun"}
+          onClick={() => scrollToTab("bun")}
         >
           Булки
         </Tab>
         <Tab
           value="sauce"
-          active={current === "sauce"}
-          onClick={() => scrollToSection("sauce")}
+          active={tab === "sauce"}
+          onClick={() => scrollToTab("sauce")}
         >
           Соусы
         </Tab>
         <Tab
           value="main"
-          active={current === "main"}
-          onClick={() => scrollToSection("main")}
+          active={tab === "main"}
+          onClick={() => scrollToTab("main")}
         >
           Начинки
         </Tab>
@@ -122,11 +158,7 @@ const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
         <div className={styles["burger-ingredients__category"]}>
           {buns.map((item) => (
             <div key={item._id} onClick={() => openModal(item)}>
-              <IngredientsItem
-                name={item.name}
-                price={item.price}
-                image_large={item.image_large}
-              />
+              <IngredientsItemDraggable ingredient={item} />
             </div>
           ))}
         </div>
@@ -137,11 +169,7 @@ const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
         <div className={styles["burger-ingredients__category"]}>
           {sauces.map((item) => (
             <div key={item._id} onClick={() => openModal(item)}>
-              <IngredientsItem
-                name={item.name}
-                price={item.price}
-                image_large={item.image_large}
-              />
+              <IngredientsItemDraggable ingredient={item} />
             </div>
           ))}
         </div>
@@ -152,25 +180,21 @@ const BurgerIngredients = ({ ingredients }: IngredientsProps) => {
         <div className={styles["burger-ingredients__category"]}>
           {mains.map((item) => (
             <div key={item._id} onClick={() => openModal(item)}>
-              <IngredientsItem
-                name={item.name}
-                price={item.price}
-                image_large={item.image_large}
-              />
+              <IngredientsItemDraggable ingredient={item} />
             </div>
           ))}
         </div>
       </div>
 
-      {isModalOpen && selectedIngredient && (
+      {ingredientDetails && (
         <Modal title="Детали ингредиента" onClose={closeModal}>
           <IngredientDetails
-            name={selectedIngredient.name}
-            image={selectedIngredient.image_large}
-            proteins={selectedIngredient.proteins}
-            fat={selectedIngredient.fat}
-            carbohydrates={selectedIngredient.carbohydrates}
-            calories={selectedIngredient.calories}
+            name={ingredientDetails.name}
+            image={ingredientDetails.image}
+            proteins={ingredientDetails.proteins}
+            fat={ingredientDetails.fat}
+            carbohydrates={ingredientDetails.carbohydrates}
+            calories={ingredientDetails.calories}
           />
         </Modal>
       )}
