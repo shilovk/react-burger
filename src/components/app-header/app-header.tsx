@@ -19,10 +19,12 @@ function AppHeader() {
             extraClass={"pr-10"}
             icon={<BurgerIcon type="primary" />}
             title="Конструктор"
+            route="/"
           />
           <HeaderItem
             icon={<ListIcon type="secondary" />}
             title="Лента заказов"
+            route="/orders"
           />
         </div>
         <div className={styles["app-header__logo"]}>
@@ -33,6 +35,7 @@ function AppHeader() {
             extraClass={"pr-15"}
             icon={<ProfileIcon type="secondary" />}
             title="Личный кабинет"
+            route="/profile"
           />
         </div>
       </nav>

@@ -13,6 +13,20 @@ import {
 } from "./ingredient-details";
 import { orderReducer, initialState as initialStateOrder } from "./order";
 import { tabReducer, initialState as initialStateTab } from "./tab";
+import {
+  registerReducer,
+  initialState as initialStateRegister,
+} from "./register";
+import {
+  resetPasswordReducer,
+  initialState as initialStateResetPassword,
+} from "./reset-password";
+import { loginReducer, initialState as initialStateLogin } from "./login";
+import {
+  forgotPasswordReducer,
+  initialState as initialStateForgotPassword,
+} from "./forgot-password";
+import { profileReducer, initialState as initialStateProfile } from "./profile";
 
 export const initialStateRoot = {
   burgerIngredients: initialStateBurgerIngredients,
@@ -20,6 +34,11 @@ export const initialStateRoot = {
   ingredientDetails: initialStateIngredientDetails,
   order: initialStateOrder,
   tab: initialStateTab,
+  register: initialStateRegister,
+  resetPassword: initialStateResetPassword,
+  login: initialStateLogin,
+  forgotPassword: initialStateForgotPassword,
+  profile: initialStateProfile,
 };
 
 export const rootReducer = combineReducers({
@@ -28,6 +47,11 @@ export const rootReducer = combineReducers({
   ingredientDetails: ingredientDetailsReducer,
   tab: tabReducer,
   order: orderReducer,
+  register: registerReducer,
+  resetPassword: resetPasswordReducer,
+  login: loginReducer,
+  forgotPassword: forgotPasswordReducer,
+  profile: profileReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

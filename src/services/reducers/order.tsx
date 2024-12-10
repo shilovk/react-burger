@@ -6,28 +6,28 @@ import {
 
 interface OrderState {
   orderNumber: number | null;
-  isLoading: boolean;
-  hasError: boolean;
+  isOrderLoading: boolean;
+  hasOrderError: boolean;
 }
 
 export const initialState: OrderState = {
   orderNumber: null,
-  isLoading: false,
-  hasError: false,
+  isOrderLoading: false,
+  hasOrderError: false,
 };
 
 export const orderReducer = (state = initialState, action: any): OrderState => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST:
-      return { ...state, isLoading: true, hasError: false };
+      return { ...state, isOrderLoading: true, hasOrderError: false };
     case CREATE_ORDER_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isOrderLoading: false,
         orderNumber: action.payload.orderNumber,
       };
     case CREATE_ORDER_FAILURE:
-      return { ...state, isLoading: false, hasError: true };
+      return { ...state, isOrderLoading: false, hasOrderError: true };
     default:
       return state;
   }

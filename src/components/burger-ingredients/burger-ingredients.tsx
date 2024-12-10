@@ -1,15 +1,10 @@
 import React, { useRef, useEffect, useMemo } from "react";
-import Modal from "../modal/modal";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsItem from "./ingridients-item/ingredients-item";
-import IngredientDetails from "./ingredient-details/ingredient-details";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../services/reducers/reducers";
-import {
-  setIngredientDetails,
-  clearIngredientDetails,
-} from "../../services/actions/ingredient-details";
 import { setTab } from "../../services/actions/tab";
 import { Ingredient } from "./burger-ingredients.types";
 import { useDrag } from "react-dnd";
@@ -43,11 +38,9 @@ const IngredientsItemDraggable = ({
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const ingredientDetails = useSelector(
-    (state: RootState) => state.ingredientDetails.ingredient,
-  );
-  const tab = useSelector((state: RootState) => state.tab.title);
+  const navigate = useNavigate();
 
+  const tab = useSelector((state: RootState) => state.tab.title);
   const ingredients = useSelector<RootState, Ingredient[]>(
     (state) => state.burgerIngredients.ingredients,
   );
@@ -58,11 +51,9 @@ const BurgerIngredients = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const openModal = (ingredient: Ingredient) => {
-    dispatch(setIngredientDetails(ingredient));
-  };
-
-  const closeModal = () => {
-    dispatch(clearIngredientDetails());
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: window.location.pathname + window.location.search },
+    });
   };
 
   const handleScroll = () => {
@@ -185,19 +176,6 @@ const BurgerIngredients = () => {
           ))}
         </div>
       </div>
-
-      {ingredientDetails && (
-        <Modal title="Детали ингредиента" onClose={closeModal}>
-          <IngredientDetails
-            name={ingredientDetails.name}
-            image={ingredientDetails.image}
-            proteins={ingredientDetails.proteins}
-            fat={ingredientDetails.fat}
-            carbohydrates={ingredientDetails.carbohydrates}
-            calories={ingredientDetails.calories}
-          />
-        </Modal>
-      )}
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../services/reducers/reducers";
 import {
   addIngredient,
@@ -20,7 +21,9 @@ import { Ingredient } from "../../services/actions/burger-constructor";
 import { createOrder } from "../../services/actions/order";
 
 const BurgerConstructor = () => {
+  const isAuth = !!sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { ingredients, bun } = useSelector(
     (state: RootState) => state.burgerConstructor,
   );
@@ -89,6 +92,12 @@ const BurgerConstructor = () => {
   }, [selectedBun, selectedIngredients]);
 
   const handleOrder = () => {
+    if (!isAuth) {
+      alert("Требуется авторизация");
+      navigate("/login");
+      return;
+    }
+
     if (!selectedBun) {
       alert("Пожалуйста, добавьте булку в заказ.");
       return;
