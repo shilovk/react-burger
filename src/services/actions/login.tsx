@@ -1,5 +1,6 @@
-import { BASE_URL } from "../../components/@types/api";
 import { AppDispatch } from "../store";
+import { request } from "../../utils/api";
+import { NavigateFunction } from "react-router-dom";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -25,34 +26,22 @@ interface SetAuthStateAction {
   isAuthenticated: boolean;
 }
 
-export type LoginActionTypes =
-  | LoginRequestAction
-  | LoginSuccessAction
-  | LoginFailureAction
-  | SetAuthStateAction;
+export type LoginActionTypes = LoginRequestAction | LoginSuccessAction | LoginFailureAction | SetAuthStateAction;
 
 export const setAuthState = () => (dispatch: AppDispatch) => {
   const accessToken = sessionStorage.getItem("accessToken");
   dispatch({ type: SET_AUTH_STATE, isAuthenticated: !!accessToken });
 };
 
-export const login =
-  (email: string, password: string) => async (dispatch: AppDispatch) => {
-    dispatch({ type: LOGIN_REQUEST });
+export const login = (email: string, password: string) => (dispatch: AppDispatch) => {
+  dispatch({ type: LOGIN_REQUEST });
 
-    try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Ошибка авторизации");
-      }
-
+  request("auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  })
+    .then((data) => {
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {
@@ -65,7 +54,8 @@ export const login =
       sessionStorage.setItem("accessToken", data.accessToken);
 
       dispatch(setAuthState());
-    } catch (error: any) {
+    })
+    .catch((error) => {
       dispatch({ type: LOGIN_FAILURE, error: error.message });
-    }
-  };
+    });
+};

@@ -1,10 +1,4 @@
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  SET_AUTH_STATE,
-  LoginActionTypes,
-} from "../actions/login";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, SET_AUTH_STATE, LoginActionTypes } from "../actions/login";
 
 interface LoginState {
   isLoading: boolean;
@@ -18,10 +12,7 @@ export const initialState: LoginState = {
   error: null,
 };
 
-export const loginReducer = (
-  state = initialState,
-  action: LoginActionTypes,
-): LoginState => {
+export const loginReducer = (state = initialState, action: LoginActionTypes): LoginState => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return { ...state, isLoading: true, error: null };

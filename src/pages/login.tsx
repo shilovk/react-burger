@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../services/hooks/use-app-dispatch";
 import { login } from "../services/actions/login";
@@ -15,10 +12,7 @@ export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const { isLoading, error, isAuthenticated } = useSelector(
-    (state: RootState) => state.login,
-  );
+  const { isLoading, error, isAuthenticated } = useSelector((state: RootState) => state.login);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,30 +61,19 @@ export function Login() {
 
           {error && <p className="text-red-600">{error}</p>}
 
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-            disabled={isLoading || !email || !password}
-          >
+          <Button htmlType="submit" type="primary" size="medium" disabled={isLoading || !email || !password}>
             {isLoading ? "Авторизация..." : "Войти"}
           </Button>
 
           <div className="mt-20 text text_type_main-default">
             Вы новый пользователь?
-            <Link
-              to="/register"
-              className="ml-2 text_type_main-default text-blueLink hover:underline"
-            >
+            <Link to="/register" className="ml-2 text_type_main-default text-blueLink hover:underline">
               Зарегистрироваться
             </Link>
           </div>
           <div className="mt-2 text text_type_main-default">
             Забыли пароль?
-            <Link
-              to="/forgot-password"
-              className="ml-2 text_type_main-default text-blueLink hover:underline"
-            >
+            <Link to="/forgot-password" className="ml-2 text_type_main-default text-blueLink hover:underline">
               Восстановить пароль
             </Link>
           </div>

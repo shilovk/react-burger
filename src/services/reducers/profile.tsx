@@ -23,10 +23,7 @@ export const initialState: ProfileState = {
   successMessage: null,
 };
 
-export const profileReducer = (
-  state = initialState,
-  action: ProfileActionTypes,
-): ProfileState => {
+export const profileReducer = (state = initialState, action: ProfileActionTypes): ProfileState => {
   switch (action.type) {
     case PROFILE_REQUEST:
       return { ...state, isLoading: true, error: null, successMessage: null };

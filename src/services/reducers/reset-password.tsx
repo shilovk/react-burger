@@ -17,10 +17,7 @@ export const initialState: ResetPasswordState = {
   success: false,
 };
 
-export const resetPasswordReducer = (
-  state = initialState,
-  action: ResetPasswordActionTypes,
-): ResetPasswordState => {
+export const resetPasswordReducer = (state = initialState, action: ResetPasswordActionTypes): ResetPasswordState => {
   switch (action.type) {
     case RESET_PASSWORD_REQUEST:
       return { ...state, isLoading: true, error: null, success: false };

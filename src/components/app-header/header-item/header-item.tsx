@@ -5,9 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const HeaderItem = ({ icon, title, route, extraClass }: HeaderItemProps) => {
   const location = useLocation();
-  const isActive =
-    location.pathname === route ||
-    (route === "/" && location.pathname.startsWith("/ingredients/"));
+  const isActive = location.pathname === route || (route === "/" && location.pathname.startsWith("/ingredients/"));
   const activeIcon = React.cloneElement(icon, {
     type: isActive ? "primary" : "secondary",
   });

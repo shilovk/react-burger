@@ -3,20 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../services/reducers/reducers";
-import {
-  addIngredient,
-  setBun,
-  removeIngredient,
-  reorderIngredients,
-} from "../../services/actions/burger-constructor";
+import { addIngredient, setBun, removeIngredient, reorderIngredients } from "../../services/actions/burger-constructor";
 import ConstructorItem from "./constructor-item/constructor-item";
 import styles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import {
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../../services/actions/burger-constructor";
 import { createOrder } from "../../services/actions/order";
 
@@ -24,15 +16,11 @@ const BurgerConstructor = () => {
   const isAuth = !!sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ingredients, bun } = useSelector(
-    (state: RootState) => state.burgerConstructor,
-  );
+  const { ingredients, bun } = useSelector((state: RootState) => state.burgerConstructor);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const allIngredients: Ingredient[] = useSelector(
-    (state: RootState) => state.burgerIngredients.ingredients,
-  );
+  const allIngredients: Ingredient[] = useSelector((state: RootState) => state.burgerIngredients.ingredients);
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -69,13 +57,9 @@ const BurgerConstructor = () => {
     return ingredients
       .map((ingredient) => {
         // Найти объект ингредиента по id
-        const foundIngredient = allIngredients.find(
-          (item) => item._id === ingredient.id,
-        );
+        const foundIngredient = allIngredients.find((item) => item._id === ingredient.id);
         // Если найден, добавить uniqueId
-        return foundIngredient
-          ? { ...foundIngredient, uniqueId: ingredient.uniqueId }
-          : undefined;
+        return foundIngredient ? { ...foundIngredient, uniqueId: ingredient.uniqueId } : undefined;
       })
       .filter((item): item is Ingredient => !!item); // Фильтруем undefined
   }, [ingredients, allIngredients]);
@@ -85,15 +69,13 @@ const BurgerConstructor = () => {
   }, [bun, allIngredients]);
 
   const totalPrice = useMemo(() => {
-    return (
-      (selectedBun ? selectedBun.price * 2 : 0) +
-      selectedIngredients.reduce((acc, item) => acc + item.price, 0)
-    );
+    return (selectedBun ? selectedBun.price * 2 : 0) + selectedIngredients.reduce((acc, item) => acc + item.price, 0);
   }, [selectedBun, selectedIngredients]);
 
   const handleOrder = () => {
     if (!isAuth) {
       alert("Требуется авторизация");
+      localStorage.setItem("redirectTo", "/");
       navigate("/login");
       return;
     }
@@ -103,11 +85,7 @@ const BurgerConstructor = () => {
       return;
     }
 
-    const ingredientIds = [
-      selectedBun._id,
-      ...ingredients.map((ingredient) => ingredient.id),
-      selectedBun._id,
-    ];
+    const ingredientIds = [selectedBun._id, ...ingredients.map((ingredient) => ingredient.id), selectedBun._id];
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -119,9 +97,7 @@ const BurgerConstructor = () => {
     setModalOpen(false);
   };
 
-  const orderNumber = useSelector(
-    (state: RootState) => state.order.orderNumber,
-  );
+  const orderNumber = useSelector((state: RootState) => state.order.orderNumber);
 
   const moveIngredient = (dragIndex: number, hoverIndex?: number) => {
     if (hoverIndex === undefined) return;
@@ -183,13 +159,7 @@ const BurgerConstructor = () => {
       <div className={`${styles["burger-constructor__bottom"]} pt-5 pr-3`}>
         <div className="text text_type_digits-medium">{totalPrice}</div>
         <CurrencyIcon className="pl-2" type="primary" />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          extraClass="ml-7"
-          onClick={handleOrder}
-        >
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-7" onClick={handleOrder}>
           <span className="text text_type_main-small">Оформить заказ</span>
         </Button>
       </div>

@@ -9,11 +9,7 @@ import { setTab } from "../../services/actions/tab";
 import { Ingredient } from "./burger-ingredients.types";
 import { useDrag } from "react-dnd";
 
-const IngredientsItemDraggable = ({
-  ingredient,
-}: {
-  ingredient: Ingredient;
-}) => {
+const IngredientsItemDraggable = ({ ingredient }: { ingredient: Ingredient }) => {
   const [{ isDragging }, drag] = useDrag({
     type: ingredient.type,
     item: { id: ingredient._id },
@@ -41,9 +37,7 @@ const BurgerIngredients = () => {
   const navigate = useNavigate();
 
   const tab = useSelector((state: RootState) => state.tab.title);
-  const ingredients = useSelector<RootState, Ingredient[]>(
-    (state) => state.burgerIngredients.ingredients,
-  );
+  const ingredients = useSelector<RootState, Ingredient[]>((state) => state.burgerIngredients.ingredients);
 
   const bunRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
@@ -66,9 +60,7 @@ const BurgerIngredients = () => {
 
       if (Math.abs(bunPos - containerTop) < Math.abs(saucePos - containerTop)) {
         dispatch(setTab("bun"));
-      } else if (
-        Math.abs(saucePos - containerTop) < Math.abs(mainPos - containerTop)
-      ) {
+      } else if (Math.abs(saucePos - containerTop) < Math.abs(mainPos - containerTop)) {
         dispatch(setTab("sauce"));
       } else {
         dispatch(setTab("main"));
@@ -119,25 +111,13 @@ const BurgerIngredients = () => {
     <section className={styles["burger-ingredients"]}>
       <div className="text text_type_main-large pt-7 pb-5">Соберите бургер</div>
       <div className={styles["burger-ingredients__tabs"]}>
-        <Tab
-          value="bun"
-          active={tab === "bun"}
-          onClick={() => scrollToTab("bun")}
-        >
+        <Tab value="bun" active={tab === "bun"} onClick={() => scrollToTab("bun")}>
           Булки
         </Tab>
-        <Tab
-          value="sauce"
-          active={tab === "sauce"}
-          onClick={() => scrollToTab("sauce")}
-        >
+        <Tab value="sauce" active={tab === "sauce"} onClick={() => scrollToTab("sauce")}>
           Соусы
         </Tab>
-        <Tab
-          value="main"
-          active={tab === "main"}
-          onClick={() => scrollToTab("main")}
-        >
+        <Tab value="main" active={tab === "main"} onClick={() => scrollToTab("main")}>
           Начинки
         </Tab>
       </div>

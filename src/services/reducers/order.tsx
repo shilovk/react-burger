@@ -1,8 +1,4 @@
-import {
-  CREATE_ORDER_REQUEST,
-  CREATE_ORDER_SUCCESS,
-  CREATE_ORDER_FAILURE,
-} from "../actions/order";
+import { CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILURE, OrderActionTypes } from "../actions/order";
 
 interface OrderState {
   orderNumber: number | null;
@@ -16,7 +12,7 @@ export const initialState: OrderState = {
   hasOrderError: false,
 };
 
-export const orderReducer = (state = initialState, action: any): OrderState => {
+export const orderReducer = (state = initialState, action: OrderActionTypes): OrderState => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST:
       return { ...state, isOrderLoading: true, hasOrderError: false };

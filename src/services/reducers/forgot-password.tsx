@@ -17,10 +17,7 @@ export const initialState: ForgotPasswordState = {
   success: false,
 };
 
-export const forgotPasswordReducer = (
-  state = initialState,
-  action: ForgotPasswordActionTypes,
-): ForgotPasswordState => {
+export const forgotPasswordReducer = (state = initialState, action: ForgotPasswordActionTypes): ForgotPasswordState => {
   switch (action.type) {
     case FORGOT_PASSWORD_REQUEST:
       return { ...state, isLoading: true, error: null, success: false };

@@ -1,5 +1,5 @@
-import { BASE_URL } from "../../components/@types/api";
-import { checkResponse } from "../../utils/api";
+import { AppDispatch } from "../store";
+import { request } from "../../utils/api";
 
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -18,21 +18,16 @@ export const decrementIngredientCount = (id: string, decrementBy = 1) => ({
   payload: { id, decrementBy },
 });
 
-export const getIngredients = () => {
-  return async (
-    dispatch: (arg0: { type: string; payload?: any; error?: any }) => void,
-  ) => {
-    dispatch({ type: GET_INGREDIENTS_REQUEST });
+export const getIngredients = () => (dispatch: AppDispatch) => {
+  dispatch({ type: GET_INGREDIENTS_REQUEST });
 
-    fetch(`${BASE_URL}/ingredients`)
-      .then(checkResponse)
-      .then((data) => {
-        dispatch({ type: GET_INGREDIENTS_SUCCESS, payload: data.data });
-      })
-      .catch((error) => {
-        dispatch({ type: GET_INGREDIENTS_FAILED, error: error.message });
-      });
-  };
+  request("ingredients")
+    .then((data) => {
+      dispatch({ type: GET_INGREDIENTS_SUCCESS, payload: data.data });
+    })
+    .catch((error) => {
+      dispatch({ type: GET_INGREDIENTS_FAILED, error: error.message });
+    });
 };
 
 export const resetIngredientCounts = () => ({

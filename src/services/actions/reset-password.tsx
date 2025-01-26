@@ -1,5 +1,5 @@
 import type { AppDispatch } from "../store";
-import { BASE_URL } from "../../components/@types/api";
+import { request } from "../../utils/api";
 
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
@@ -23,27 +23,18 @@ export type ResetPasswordActionTypes =
   | ResetPasswordSuccessAction
   | ResetPasswordFailureAction;
 
-export const resetPassword =
-  (password: string, token: string) => async (dispatch: AppDispatch) => {
-    dispatch({ type: RESET_PASSWORD_REQUEST });
+export const resetPassword = (password: string, token: string) => async (dispatch: AppDispatch) => {
+  dispatch({ type: RESET_PASSWORD_REQUEST });
 
-    try {
-      const response = await fetch(`${BASE_URL}/password-reset/reset`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ password, token }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Ошибка сброса пароля");
-      }
-
+  request("password-reset/reset", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password, token }),
+  })
+    .then(() => {
       dispatch({ type: RESET_PASSWORD_SUCCESS });
-    } catch (error: any) {
+    })
+    .catch((error) => {
       dispatch({ type: RESET_PASSWORD_FAILURE, error: error.message });
-    }
-  };
+    });
+};

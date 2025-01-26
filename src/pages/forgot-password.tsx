@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../services/hooks/use-app-dispatch";
@@ -14,9 +11,7 @@ export function ForgotPassword() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { isLoading, error, success } = useSelector(
-    (state: RootState) => state.forgotPassword,
-  );
+  const { isLoading, error, success } = useSelector((state: RootState) => state.forgotPassword);
 
   useEffect(() => {
     if (success) {
@@ -49,12 +44,7 @@ export function ForgotPassword() {
             onPointerLeaveCapture={undefined}
           />
 
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-            disabled={isLoading || !email}
-          >
+          <Button htmlType="submit" type="primary" size="medium" disabled={isLoading || !email}>
             {isLoading ? "Отправка..." : "Восстановить"}
           </Button>
 

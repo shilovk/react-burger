@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../services/reducers/reducers";
@@ -18,9 +15,7 @@ export function Register() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { isLoading, error, success } = useSelector(
-    (state: RootState) => state.register,
-  );
+  const { isLoading, error, success } = useSelector((state: RootState) => state.register);
 
   useEffect(() => {
     if (success) {
@@ -84,27 +79,15 @@ export function Register() {
             onPointerLeaveCapture={undefined}
           />
 
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-            disabled={isLoading || !email || !password || !name}
-          >
+          <Button htmlType="submit" type="primary" size="medium" disabled={isLoading || !email || !password || !name}>
             {isLoading ? "Регистрация..." : "Зарегистрироваться"}
           </Button>
 
-          {error && (
-            <div className="mt-5 text text_type_main-default text-red-500">
-              {error}
-            </div>
-          )}
+          {error && <div className="mt-5 text text_type_main-default text-red-500">{error}</div>}
 
           <div className="mt-20 text text_type_main-default">
             Уже зарегистрированы?
-            <Link
-              to="/login"
-              className="ml-2 text_type_main-default text-blueLink hover:underline"
-            >
+            <Link to="/login" className="ml-2 text_type_main-default text-blueLink hover:underline">
               Войти
             </Link>
           </div>

@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../components/@types/api";
+import { request } from "../../utils/api";
 import { AppDispatch } from "../store";
 
 export const FORGOT_PASSWORD_REQUEST = "FORGOT_PASSWORD_REQUEST";
@@ -23,27 +23,19 @@ export type ForgotPasswordActionTypes =
   | ForgotPasswordSuccessAction
   | ForgotPasswordFailureAction;
 
-export const forgotPassword =
-  (email: string) => async (dispatch: AppDispatch) => {
-    dispatch({ type: FORGOT_PASSWORD_REQUEST });
+export const forgotPassword = (email: string) => (dispatch: AppDispatch) => {
+  dispatch({ type: FORGOT_PASSWORD_REQUEST });
 
-    try {
-      const response = await fetch(`${BASE_URL}/password-reset`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Ошибка отправки запроса");
-      }
-
+  request("password-reset", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  })
+    .then(() => {
       dispatch({ type: FORGOT_PASSWORD_SUCCESS });
-
       localStorage.setItem("visitedForgotPassword", "true");
-    } catch (error: any) {
+    })
+    .catch((error) => {
       dispatch({ type: FORGOT_PASSWORD_FAILURE, error: error.message });
-    }
-  };
+    });
+};

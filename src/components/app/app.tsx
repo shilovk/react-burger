@@ -1,13 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Main } from "../../pages/main";
 import { Login } from "../../pages/login";
 import { Register } from "../../pages/register";
@@ -16,7 +10,7 @@ import { ResetPassword } from "../../pages/reset-password";
 import { NotFound } from "../../pages/not-found";
 import { Profile } from "../../pages/profile";
 import { IngredientDetailsPage } from "../../pages/ingredient-details-page";
-import { ProtectedRouteElement } from "../protected-route-element/protected-route-element";
+import { ProtectedRoute } from "../protected-route/protected-route";
 import Modal from "../modal/modal";
 import { RootState } from "../../services/reducers/reducers";
 import { useSelector } from "react-redux";
@@ -26,9 +20,7 @@ import { useAppDispatch } from "../../services/hooks/use-app-dispatch";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { ingredients, isLoading, hasError } = useSelector(
-    (state: RootState) => state.burgerIngredients,
-  );
+  const { ingredients, isLoading, hasError } = useSelector((state: RootState) => state.burgerIngredients);
 
   const isAuth = useSelector((state: RootState) => state.login.isAuthenticated);
 
@@ -68,18 +60,9 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
     <>
       <Routes location={backgroundLocation || location}>
         <Route path="/" element={<Main />} />
-        <Route
-          path="/login"
-          element={!isAuth ? <Login /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/register"
-          element={!isAuth ? <Register /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/forgot-password"
-          element={!isAuth ? <ForgotPassword /> : <Navigate to="/" />}
-        />
+        <Route path="/login" element={!isAuth ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!isAuth ? <Register /> : <Navigate to="/" />} />
+        <Route path="/forgot-password" element={!isAuth ? <ForgotPassword /> : <Navigate to="/" />} />
         <Route
           path="/reset-password"
           element={
@@ -90,12 +73,8 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
             )
           }
         />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRouteElement element={<Profile />} isAuth={isAuth} />
-          }
-        />
+        <Route path="/profile" element={<ProtectedRoute element={<Profile />} isAuth={isAuth} />} />
+        <Route path="/orders" element={<ProtectedRoute element={<NotFound />} isAuth={isAuth} />} />
         <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -106,10 +85,7 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
           <Route
             path="/ingredients/:id"
             element={
-              <Modal
-                title="Детали ингредиента"
-                onClose={() => window.history.back()}
-              >
+              <Modal title="Детали ингредиента" onClose={() => window.history.back()}>
                 <IngredientDetailsPage />
               </Modal>
             }

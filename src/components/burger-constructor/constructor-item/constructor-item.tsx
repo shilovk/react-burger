@@ -1,9 +1,6 @@
 import React, { useRef } from "react";
 import styles from "./constructor-item.module.css";
-import {
-  DragIcon,
-  ConstructorElement,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { DragIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
 import { ConstructorItemProps } from "./constructor-item.types";
 
@@ -45,11 +42,7 @@ const ConstructorItem = ({
   }
 
   return (
-    <div
-      ref={ref}
-      className={`${styles["constructor-item"]} ${extraClass}`}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
-    >
+    <div ref={ref} className={`${styles["constructor-item"]} ${extraClass}`} style={{ opacity: isDragging ? 0.5 : 1 }}>
       {dragIcon && <DragIcon type="primary" className="pr-5" />}
       <ConstructorElement
         type={type}

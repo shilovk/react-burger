@@ -1,28 +1,20 @@
-import {
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
-  REGISTER_FAILURE,
-  registerActionTypes,
-} from "../actions/register";
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, RegisterActionTypes } from "../actions/register";
 
-interface registerState {
+interface RegisterState {
   isLoading: boolean;
   isAuthenticated: boolean;
   error: string | null;
   success: boolean;
 }
 
-export const initialState: registerState = {
+export const initialState: RegisterState = {
   isLoading: false,
   isAuthenticated: false,
   error: null,
   success: false,
 };
 
-export const registerReducer = (
-  state = initialState,
-  action: registerActionTypes,
-): registerState => {
+export const registerReducer = (state = initialState, action: RegisterActionTypes): RegisterState => {
   switch (action.type) {
     case REGISTER_REQUEST:
       return { ...state, isLoading: true, error: null, success: false };
