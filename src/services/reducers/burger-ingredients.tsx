@@ -22,7 +22,7 @@ export const initialState: BurgerIngredientsState = {
 
 export const burgerIngredientsReducer = (
   state = initialState,
-  action: { type: string; payload: any },
+  action: { type: string; payload: any }
 ): BurgerIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
@@ -33,12 +33,10 @@ export const burgerIngredientsReducer = (
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
-      const ingredientsWithCount = action.payload.map(
-        (ingredient: Ingredient) => ({
-          ...ingredient,
-          count: 0,
-        }),
-      );
+      const ingredientsWithCount = action.payload.map((ingredient: Ingredient) => ({
+        ...ingredient,
+        count: 0,
+      }));
       return {
         ...state,
         ingredients: ingredientsWithCount,
@@ -59,12 +57,9 @@ export const burgerIngredientsReducer = (
         ingredients: state.ingredients.map((ingredient) => {
           if (ingredient._id === action.payload.id) {
             const incrementBy = action.payload.incrementBy;
-            const currentCount =
-              ingredient.count !== undefined ? ingredient.count : 0;
+            const currentCount = ingredient.count !== undefined ? ingredient.count : 0;
             const newCount =
-              ingredient.type === "bun"
-                ? Math.min(currentCount + incrementBy, 2)
-                : currentCount + incrementBy;
+              ingredient.type === "bun" ? Math.min(currentCount + incrementBy, 2) : currentCount + incrementBy;
 
             return {
               ...ingredient,
@@ -81,8 +76,7 @@ export const burgerIngredientsReducer = (
         ingredients: state.ingredients.map((ingredient) => {
           if (ingredient._id === action.payload.id) {
             const decrementBy = action.payload.decrementBy;
-            const currentCount =
-              ingredient.count !== undefined ? ingredient.count : 0;
+            const currentCount = ingredient.count !== undefined ? ingredient.count : 0;
             const newCount = Math.max(currentCount - decrementBy, 0);
 
             return {

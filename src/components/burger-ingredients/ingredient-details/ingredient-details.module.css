@@ -9,7 +9,7 @@
   width: 10rem;
   height: 10rem;
   object-fit: cover;
-  margin-bottom: 1rem;
+  margin: 0 auto;
 }
 
 .ingredient-details__name {

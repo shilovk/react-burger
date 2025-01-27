@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  incrementIngredientCount,
-  decrementIngredientCount,
-} from "./burger-ingredients";
+import { incrementIngredientCount, decrementIngredientCount } from "./burger-ingredients";
 
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";

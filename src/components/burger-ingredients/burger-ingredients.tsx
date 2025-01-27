@@ -1,24 +1,15 @@
 import React, { useRef, useEffect, useMemo } from "react";
-import Modal from "../modal/modal";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsItem from "./ingridients-item/ingredients-item";
-import IngredientDetails from "./ingredient-details/ingredient-details";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../services/reducers/reducers";
-import {
-  setIngredientDetails,
-  clearIngredientDetails,
-} from "../../services/actions/ingredient-details";
 import { setTab } from "../../services/actions/tab";
 import { Ingredient } from "./burger-ingredients.types";
 import { useDrag } from "react-dnd";
 
-const IngredientsItemDraggable = ({
-  ingredient,
-}: {
-  ingredient: Ingredient;
-}) => {
+const IngredientsItemDraggable = ({ ingredient }: { ingredient: Ingredient }) => {
   const [{ isDragging }, drag] = useDrag({
     type: ingredient.type,
     item: { id: ingredient._id },
@@ -43,14 +34,10 @@ const IngredientsItemDraggable = ({
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const ingredientDetails = useSelector(
-    (state: RootState) => state.ingredientDetails.ingredient,
-  );
-  const tab = useSelector((state: RootState) => state.tab.title);
+  const navigate = useNavigate();
 
-  const ingredients = useSelector<RootState, Ingredient[]>(
-    (state) => state.burgerIngredients.ingredients,
-  );
+  const tab = useSelector((state: RootState) => state.tab.title);
+  const ingredients = useSelector<RootState, Ingredient[]>((state) => state.burgerIngredients.ingredients);
 
   const bunRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
@@ -58,11 +45,9 @@ const BurgerIngredients = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const openModal = (ingredient: Ingredient) => {
-    dispatch(setIngredientDetails(ingredient));
-  };
-
-  const closeModal = () => {
-    dispatch(clearIngredientDetails());
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: window.location.pathname + window.location.search },
+    });
   };
 
   const handleScroll = () => {
@@ -75,9 +60,7 @@ const BurgerIngredients = () => {
 
       if (Math.abs(bunPos - containerTop) < Math.abs(saucePos - containerTop)) {
         dispatch(setTab("bun"));
-      } else if (
-        Math.abs(saucePos - containerTop) < Math.abs(mainPos - containerTop)
-      ) {
+      } else if (Math.abs(saucePos - containerTop) < Math.abs(mainPos - containerTop)) {
         dispatch(setTab("sauce"));
       } else {
         dispatch(setTab("main"));
@@ -128,25 +111,13 @@ const BurgerIngredients = () => {
     <section className={styles["burger-ingredients"]}>
       <div className="text text_type_main-large pt-7 pb-5">Соберите бургер</div>
       <div className={styles["burger-ingredients__tabs"]}>
-        <Tab
-          value="bun"
-          active={tab === "bun"}
-          onClick={() => scrollToTab("bun")}
-        >
+        <Tab value="bun" active={tab === "bun"} onClick={() => scrollToTab("bun")}>
           Булки
         </Tab>
-        <Tab
-          value="sauce"
-          active={tab === "sauce"}
-          onClick={() => scrollToTab("sauce")}
-        >
+        <Tab value="sauce" active={tab === "sauce"} onClick={() => scrollToTab("sauce")}>
           Соусы
         </Tab>
-        <Tab
-          value="main"
-          active={tab === "main"}
-          onClick={() => scrollToTab("main")}
-        >
+        <Tab value="main" active={tab === "main"} onClick={() => scrollToTab("main")}>
           Начинки
         </Tab>
       </div>
@@ -185,19 +156,6 @@ const BurgerIngredients = () => {
           ))}
         </div>
       </div>
-
-      {ingredientDetails && (
-        <Modal title="Детали ингредиента" onClose={closeModal}>
-          <IngredientDetails
-            name={ingredientDetails.name}
-            image={ingredientDetails.image}
-            proteins={ingredientDetails.proteins}
-            fat={ingredientDetails.fat}
-            carbohydrates={ingredientDetails.carbohydrates}
-            calories={ingredientDetails.calories}
-          />
-        </Modal>
-      )}
     </section>
   );
 };

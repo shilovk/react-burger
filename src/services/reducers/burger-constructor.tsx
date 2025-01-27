@@ -18,7 +18,7 @@ export const initialState: BurgerConstructorState = {
 
 export const burgerConstructorReducer = (
   state = initialState,
-  action: { type: string; payload?: any },
+  action: { type: string; payload?: any }
 ): BurgerConstructorState => {
   switch (action.type) {
     case ADD_INGREDIENT: {
@@ -31,9 +31,7 @@ export const burgerConstructorReducer = (
       const ingredientIdToRemove = action.payload;
 
       // Найдем индекс первого найденного ингредиента с таким ID
-      const indexToRemove = state.ingredients.findIndex(
-        (id) => id === ingredientIdToRemove,
-      );
+      const indexToRemove = state.ingredients.findIndex((id) => id === ingredientIdToRemove);
 
       // Если такой ингредиент найден, удалим его
       if (indexToRemove !== -1) {

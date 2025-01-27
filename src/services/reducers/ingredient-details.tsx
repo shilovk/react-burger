@@ -1,7 +1,4 @@
-import {
-  SET_INGREDIENT_DETAILS,
-  CLEAR_INGREDIENT_DETAILS,
-} from "../actions/ingredient-details";
+import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../actions/ingredient-details";
 import { IngredientDetails } from "../../components/burger-ingredients/ingredient-details/ingredient-details.types";
 
 interface IngredientDetailsState {
@@ -14,7 +11,7 @@ export const initialState: IngredientDetailsState = {
 
 export const ingredientDetailsReducer = (
   state = initialState,
-  action: { type: string; payload?: IngredientDetails },
+  action: { type: string; payload?: IngredientDetails }
 ): IngredientDetailsState => {
   switch (action.type) {
     case SET_INGREDIENT_DETAILS:

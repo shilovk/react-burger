@@ -1,15 +1,22 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
-    "indent": ["error", 2, { "SwitchCase": 1 }]
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "max-len": ["error", { "code": 120, "tabWidth": 2, "ignoreUrls": true }],
+    "prettier/prettier": ["error", { "printWidth": 120, "tabWidth": 2, "singleQuote": false, "trailingComma": "es5" }],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+    "react/react-in-jsx-scope": "off"
   },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"

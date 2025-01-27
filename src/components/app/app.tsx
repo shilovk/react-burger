@@ -1,30 +1,38 @@
-// components/App.tsx
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { getIngredients } from "../../services/actions/burger-ingredients";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Main } from "../../pages/main";
+import { Login } from "../../pages/login";
+import { Register } from "../../pages/register";
+import { ForgotPassword } from "../../pages/forgot-password";
+import { ResetPassword } from "../../pages/reset-password";
+import { NotFound } from "../../pages/not-found";
+import { Profile } from "../../pages/profile";
+import { IngredientDetailsPage } from "../../pages/ingredient-details-page";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import Modal from "../modal/modal";
 import { RootState } from "../../services/reducers/reducers";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useSelector } from "react-redux";
+import { getIngredients } from "../../services/actions/burger-ingredients";
+import { setAuthState } from "../../services/actions/login";
+import { useAppDispatch } from "../../services/hooks/use-app-dispatch";
 
 function App() {
-  const dispatch = useDispatch();
-  const { ingredients, isLoading, hasError } = useSelector(
-    (state: RootState) => state.burgerIngredients,
-  );
+  const dispatch = useAppDispatch();
+  const { ingredients, isLoading, hasError } = useSelector((state: RootState) => state.burgerIngredients);
 
-  const isOrderLoading = useSelector(
-    (state: RootState) => state.order.isLoading,
-  );
-
-  const hasOrderError = useSelector((state: RootState) => state.order.hasError);
+  const isAuth = useSelector((state: RootState) => state.login.isAuthenticated);
 
   useEffect(() => {
-    dispatch(getIngredients() as never);
+    dispatch(setAuthState());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (ingredients.length === 0 && !isLoading && !hasError) {
+      dispatch(getIngredients() as never);
+    }
+  }, [dispatch, ingredients.length, isLoading, hasError]);
 
   if (isLoading) {
     return <div>Загрузка...</div>;
@@ -35,22 +43,57 @@ function App() {
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <Router>
       <div className={styles.app}>
         <AppHeader />
-        <main className={`${styles.app__main} pl-10 pr-7`}>
-          <div className={styles["burger-ingredients"]}>
-            <BurgerIngredients />
-          </div>
-          <div className={styles["burger-constructor"]}>
-            <BurgerConstructor />
-            {isOrderLoading && <div>Создание заказа...</div>}
-            {hasOrderError && <div>Ошибка при создании заказа</div>}
-          </div>
-        </main>
+        <AppRoutes isAuth={isAuth} />
       </div>
-    </DndProvider>
+    </Router>
   );
 }
+
+const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
+
+  return (
+    <>
+      <Routes location={backgroundLocation || location}>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={!isAuth ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!isAuth ? <Register /> : <Navigate to="/" />} />
+        <Route path="/forgot-password" element={!isAuth ? <ForgotPassword /> : <Navigate to="/" />} />
+        <Route
+          path="/reset-password"
+          element={
+            !isAuth && !!localStorage.getItem("visitedForgotPassword") ? (
+              <ResetPassword />
+            ) : (
+              <Navigate to="/forgot-password" />
+            )
+          }
+        />
+        <Route path="/profile" element={<ProtectedRoute element={<Profile />} isAuth={isAuth} />} />
+        <Route path="/orders" element={<ProtectedRoute element={<NotFound />} isAuth={isAuth} />} />
+        <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {/* Модальное окно отображается только при фоновом маршруте */}
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path="/ingredients/:id"
+            element={
+              <Modal title="Детали ингредиента" onClose={() => window.history.back()}>
+                <IngredientDetailsPage />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+    </>
+  );
+};
 
 export default App;
