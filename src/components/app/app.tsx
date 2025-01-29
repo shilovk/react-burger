@@ -8,15 +8,19 @@ import { Register } from "../../pages/register";
 import { ForgotPassword } from "../../pages/forgot-password";
 import { ResetPassword } from "../../pages/reset-password";
 import { NotFound } from "../../pages/not-found";
-import { Profile } from "../../pages/profile";
 import { IngredientDetailsPage } from "../../pages/ingredient-details-page";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import Modal from "../modal/modal";
-import { RootState } from "../../services/reducers/reducers";
+import { RootState } from "../../services/types";
 import { useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import { setAuthState } from "../../services/actions/login";
-import { useAppDispatch } from "../../services/hooks/use-app-dispatch";
+import { useAppDispatch } from "../../services/types";
+import { Feed } from "../../pages/feed";
+import { OrderPage } from "../../pages/order-page";
+import { Orders } from "../orders/orders";
+import { Profile } from "../../pages/profile";
+import { ProfileEdit } from "../profile/profile-edit";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -73,8 +77,13 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
             )
           }
         />
-        <Route path="/profile" element={<ProtectedRoute element={<Profile />} isAuth={isAuth} />} />
-        <Route path="/orders" element={<ProtectedRoute element={<NotFound />} isAuth={isAuth} />} />
+        <Route path="/profile" element={<ProtectedRoute element={<Profile />} isAuth={isAuth} />}>
+          <Route index element={<ProfileEdit />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
+        <Route path="profile/orders/:id" element={<ProtectedRoute element={<OrderPage />} isAuth={isAuth} />} />
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/feed/:id" element={<OrderPage />} />
         <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -87,6 +96,22 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
             element={
               <Modal title="Детали ингредиента" onClose={() => window.history.back()}>
                 <IngredientDetailsPage />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal title="" onClose={() => window.history.back()}>
+                <OrderPage />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal title="" onClose={() => window.history.back()}>
+                <OrderPage />
               </Modal>
             }
           />

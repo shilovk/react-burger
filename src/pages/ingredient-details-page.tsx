@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import IngredientDetails from "../components/burger-ingredients/ingredient-details/ingredient-details";
-import { RootState } from "../services/reducers/reducers";
+import { RootState } from "../services/types";
 import { Ingredient } from "../components/burger-ingredients/burger-ingredients.types";
 
 export const IngredientDetailsPage = () => {

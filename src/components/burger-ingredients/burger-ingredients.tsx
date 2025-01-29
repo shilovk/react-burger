@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsItem from "./ingridients-item/ingredients-item";
-import { RootState } from "../../services/reducers/reducers";
+import { RootState } from "../../services/types";
 import { setTab } from "../../services/actions/tab";
 import { Ingredient } from "./burger-ingredients.types";
 import { useDrag } from "react-dnd";

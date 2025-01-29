@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../services/reducers/reducers";
+import { RootState } from "../services/types";
 import { register } from "../services/actions/register";
-import { useAppDispatch } from "../services/hooks/use-app-dispatch";
+import { useAppDispatch } from "../services/types";
 
 export function Register() {
   const [name, setName] = useState("");

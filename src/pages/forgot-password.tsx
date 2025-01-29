@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../services/hooks/use-app-dispatch";
+import { useAppDispatch } from "../services/types";
 import { forgotPassword } from "../services/actions/forgot-password";
-import { RootState } from "../services/reducers/reducers";
+import { RootState } from "../services/types";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");

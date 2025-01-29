@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../services/hooks/use-app-dispatch";
+import { useAppDispatch } from "../services/types";
 import { login } from "../services/actions/login";
-import { RootState } from "../services/reducers/reducers";
+import { RootState } from "../services/types";
 
 export function Login() {
   const [email, setEmail] = useState("");

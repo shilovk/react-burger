@@ -1,5 +1,5 @@
 import { request } from "../../utils/api";
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../types";
 
 export const FORGOT_PASSWORD_REQUEST = "FORGOT_PASSWORD_REQUEST";
 export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";

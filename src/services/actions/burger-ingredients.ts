@@ -1,4 +1,4 @@
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../types";
 import { request } from "../../utils/api";
 
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";

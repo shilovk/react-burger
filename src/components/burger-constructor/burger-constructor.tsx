@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../services/reducers/reducers";
+import { RootState } from "../../services/types";
 import { addIngredient, setBun, removeIngredient, reorderIngredients } from "../../services/actions/burger-constructor";
 import ConstructorItem from "./constructor-item/constructor-item";
 import styles from "./burger-constructor.module.css";

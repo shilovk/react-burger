@@ -6,6 +6,7 @@ export default {
       colors: {
         blueLink: "#4C4CFF",
         grayText: "#8585AD",
+        grayBackground: "#1C1C21",
       },
     },
   },
