@@ -5,12 +5,12 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
   WS_CONNECTION_START,
-} from "../action-types";
-import type { IOrdersResponse } from "./order.types";
+} from "../constants";
+import type { IOrdersResponse } from "./order";
 
 export interface IWSClearOrders {
   readonly type: typeof WS_CLEAR_ORDERS;
-  readonly payload?: any;
+  readonly payload?: never;
 }
 
 export interface IWSConnectionStart {
@@ -22,7 +22,7 @@ export interface IWSConnectionStart {
 
 export interface IWSConnectionSuccessAction {
   readonly type: typeof WS_CONNECTION_SUCCESS;
-  readonly payload?: any;
+  readonly payload?: never;
 }
 
 export interface IWSConnectionErrorAction {
@@ -32,7 +32,7 @@ export interface IWSConnectionErrorAction {
 
 export interface IWSConnectionClosedAction {
   readonly type: typeof WS_CONNECTION_CLOSED;
-  readonly payload?: any;
+  readonly payload?: never;
 }
 
 export interface IWSGetOrdersAction {

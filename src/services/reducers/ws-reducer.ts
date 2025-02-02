@@ -4,7 +4,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
-} from "../action-types";
+} from "../constants";
 import type { IOrdersResponse, TWSActions } from "../types";
 
 type TWSState = {

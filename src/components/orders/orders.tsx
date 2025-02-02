@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo, useCallback } from "react";
-import { useAppDispatch } from "../../services/types";
-import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_CLEAR_ORDERS } from "../../services/action-types";
-import { useSelector } from "react-redux";
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_CLEAR_ORDERS } from "../../services/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import OrdersItem from "./orders-item";
-import { RootState } from "../../services/types";
 import { IOrder } from "../../services/types";
+import { RootState, useDispatch, useSelector } from "../../services/types";
 
 export const Orders: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 

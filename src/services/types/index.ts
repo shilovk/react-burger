@@ -6,14 +6,12 @@ import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_GET_ORDERS,
-} from "../action-types";
+} from "../constants";
 import type { TWSActions } from "./actions";
-import { useDispatch } from "react-redux";
+import { TypedUseSelectorHook, useDispatch as dispatchHook, useSelector as selectorHook } from "react-redux";
 
-export type AppActions = TWSActions;
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+export * from "./order";
+export * from "./actions";
 
 export type TWSStoreActions = {
   wsClearOrders: typeof WS_CLEAR_ORDERS;
@@ -24,5 +22,9 @@ export type TWSStoreActions = {
   onMessage: typeof WS_GET_ORDERS;
 };
 
-export * from "./order.types";
-export * from "./actions";
+export type AppActions = TWSActions;
+export type AppStore = typeof store;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
+export const useDispatch = () => dispatchHook<AppDispatch>();
+export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;

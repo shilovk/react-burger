@@ -1,1 +1,1 @@
-export * from "./socket-middleware";
+export * from "./socket";

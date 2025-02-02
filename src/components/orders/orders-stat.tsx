@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../services/types";
+import { RootState, useSelector } from "../../services/types";
 
 const OrdersStat: React.FC = () => {
   const orders = useSelector((state: RootState) => state.ws.orders) || [];

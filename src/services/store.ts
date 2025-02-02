@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { rootReducer } from "./reducers/reducers";
-import { socketMiddleware } from "./middleware";
+import { socket } from "./middleware";
 import {
   WS_CLEAR_ORDERS,
   WS_CONNECTION_CLOSED,
@@ -9,12 +9,12 @@ import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_GET_ORDERS,
-} from "./action-types";
+} from "./constants";
 import type { TWSStoreActions } from "./types";
 
 const wsUrl = "wss://norma.nomoreparties.space";
 
-const wsActions: TWSStoreActions = {
+export const wsActions: TWSStoreActions = {
   wsClearOrders: WS_CLEAR_ORDERS,
   wsInit: WS_CONNECTION_START,
   onOpen: WS_CONNECTION_SUCCESS,
@@ -25,6 +25,6 @@ const wsActions: TWSStoreActions = {
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(wsUrl, wsActions), logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socket(wsUrl, wsActions), logger),
   devTools: process.env.NODE_ENV !== "production",
 });

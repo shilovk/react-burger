@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import styles from "../components/app/app.module.css";
 import BurgerIngredients from "../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../components/burger-constructor/burger-constructor";
-import { RootState } from "../services/types";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
+import { RootState, useSelector } from "../services/types";
 
 export function Main() {
   const { isOrderLoading, hasOrderError } = useSelector((state: RootState) => state.order);

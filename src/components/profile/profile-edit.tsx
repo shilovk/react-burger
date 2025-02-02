@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch } from "../../services/types";
-import { useSelector } from "react-redux";
 import { fetchProfile, updateProfile } from "../../services/actions/profile";
-import { RootState } from "../../services/types";
+import { RootState, useDispatch, useSelector } from "../../services/types";
 
 export const ProfileEdit: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const { name, email, isLoading, error, successMessage } = useSelector((state: RootState) => state.profile);
 
   const [newName, setName] = useState(name);

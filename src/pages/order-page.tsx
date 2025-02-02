@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../services/types";
 import Order from "../components/orders/order";
-import { IOrder } from "../services/types";
 import { request } from "../utils/api";
+import { RootState, useSelector, IOrder } from "../services/types";
 
 export const OrderPage = () => {
   const location = useLocation();

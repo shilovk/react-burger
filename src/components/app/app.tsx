@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../services/types";
-import { RootState } from "../../services/types";
+import { RootState, useDispatch, useSelector } from "../../services/types";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import { setAuthState } from "../../services/actions/login";
 
@@ -24,7 +22,7 @@ import { ProfileEdit } from "../profile/profile-edit";
 import Modal from "../modal/modal";
 
 function App() {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const { ingredients, isLoading, hasError } = useSelector((state: RootState) => state.burgerIngredients);
   const isAuth = useSelector((state: RootState) => state.login.isAuthenticated);
   const [authChecked, setAuthChecked] = useState(false);

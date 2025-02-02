@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { incrementIngredientCount, decrementIngredientCount } from "./burger-ingredients";
+import { AppDispatch } from "../types";
 
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
@@ -22,7 +23,7 @@ export interface Ingredient {
   uniqueId: string;
 }
 
-export const addIngredient = (id: string) => (dispatch: any) => {
+export const addIngredient = (id: string) => (dispatch: AppDispatch) => {
   dispatch(incrementIngredientCount(id));
   dispatch({
     type: ADD_INGREDIENT,
@@ -33,12 +34,12 @@ export const addIngredient = (id: string) => (dispatch: any) => {
   });
 };
 
-export const removeIngredient = (id: string) => (dispatch: any) => {
+export const removeIngredient = (id: string) => (dispatch: AppDispatch) => {
   dispatch(decrementIngredientCount(id));
   dispatch({ type: REMOVE_INGREDIENT, payload: id });
 };
 
-export const setBun = (id: string) => (dispatch: any, getState: any) => {
+export const setBun = (id: string) => (dispatch: AppDispatch, getState: any) => {
   const state = getState();
   const { bun: currentBun } = state.burgerConstructor;
 

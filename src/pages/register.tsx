@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../services/types";
 import { register } from "../services/actions/register";
-import { useAppDispatch } from "../services/types";
+import { RootState, useDispatch, useSelector } from "../services/types";
 
 export function Register() {
   const [name, setName] = useState("");
@@ -13,7 +11,7 @@ export function Register() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   const { isLoading, error, success } = useSelector((state: RootState) => state.register);
 

@@ -1,11 +1,10 @@
 import React from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
-import { RootState } from "../../services/types";
 import GradientCircle from "./gradient-circle";
 import formatOrderDate from "../../utils/format-order-date";
 import { useLocation } from "react-router-dom";
 import { IOrderProps } from "../../services/types";
+import { RootState, useSelector } from "../../services/types";
 
 const Order: React.FC<IOrderProps> = ({ order }) => {
   const ingredientsList = useSelector((state: RootState) => state.burgerIngredients.ingredients);

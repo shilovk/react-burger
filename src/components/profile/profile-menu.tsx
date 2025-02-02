@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAppDispatch } from "../../services/types";
+import { useDispatch } from "../../services/types";
 import { logout } from "../../services/actions/profile";
 
 export const ProfileMenu: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
 
