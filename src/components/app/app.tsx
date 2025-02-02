@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../services/types";
+import { RootState } from "../../services/types";
+import { getIngredients } from "../../services/actions/burger-ingredients";
+import { setAuthState } from "../../services/actions/login";
+
 import { Main } from "../../pages/main";
 import { Login } from "../../pages/login";
 import { Register } from "../../pages/register";
@@ -10,26 +16,22 @@ import { ResetPassword } from "../../pages/reset-password";
 import { NotFound } from "../../pages/not-found";
 import { IngredientDetailsPage } from "../../pages/ingredient-details-page";
 import { ProtectedRoute } from "../protected-route/protected-route";
-import Modal from "../modal/modal";
-import { RootState } from "../../services/types";
-import { useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions/burger-ingredients";
-import { setAuthState } from "../../services/actions/login";
-import { useAppDispatch } from "../../services/types";
 import { Feed } from "../../pages/feed";
 import { OrderPage } from "../../pages/order-page";
 import { Orders } from "../orders/orders";
 import { Profile } from "../../pages/profile";
 import { ProfileEdit } from "../profile/profile-edit";
+import Modal from "../modal/modal";
 
 function App() {
   const dispatch = useAppDispatch();
   const { ingredients, isLoading, hasError } = useSelector((state: RootState) => state.burgerIngredients);
-
   const isAuth = useSelector((state: RootState) => state.login.isAuthenticated);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     dispatch(setAuthState());
+    setAuthChecked(true);
   }, [dispatch]);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ function App() {
     }
   }, [dispatch, ingredients.length, isLoading, hasError]);
 
-  if (isLoading) {
+  if (!authChecked || isLoading) {
     return <div>Загрузка...</div>;
   }
 
@@ -58,7 +60,7 @@ function App() {
 
 const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
   const location = useLocation();
-  const backgroundLocation = location.state?.background;
+  const backgroundLocation = location.state?.background || null;
 
   return (
     <>
@@ -81,41 +83,22 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
           <Route index element={<ProfileEdit />} />
           <Route path="orders" element={<Orders />} />
         </Route>
-        <Route path="profile/orders/:id" element={<ProtectedRoute element={<OrderPage />} isAuth={isAuth} />} />
+        <Route path="/profile/orders/:id" element={<ProtectedRoute element={<OrderPage />} isAuth={isAuth} />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/feed/:id" element={<OrderPage />} />
         <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {/* Модальное окно отображается только при фоновом маршруте */}
+      {/* Модальное окно отображается только при наличии backgroundLocation */}
       {backgroundLocation && (
-        <Routes>
-          <Route
-            path="/ingredients/:id"
-            element={
-              <Modal title="Детали ингредиента" onClose={() => window.history.back()}>
-                <IngredientDetailsPage />
-              </Modal>
-            }
-          />
-          <Route
-            path="/feed/:id"
-            element={
-              <Modal title="" onClose={() => window.history.back()}>
-                <OrderPage />
-              </Modal>
-            }
-          />
-          <Route
-            path="/profile/orders/:id"
-            element={
-              <Modal title="" onClose={() => window.history.back()}>
-                <OrderPage />
-              </Modal>
-            }
-          />
-        </Routes>
+        <Modal title="" onClose={() => window.history.back()}>
+          <Routes>
+            <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
+            <Route path="/feed/:id" element={<OrderPage />} />
+            <Route path="/profile/orders/:id" element={<OrderPage />} />
+          </Routes>
+        </Modal>
       )}
     </>
   );

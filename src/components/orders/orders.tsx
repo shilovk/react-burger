@@ -13,21 +13,20 @@ export const Orders: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch({ type: WS_CLEAR_ORDERS });
     dispatch({ type: WS_CONNECTION_START });
 
     return () => {
       dispatch({ type: WS_CONNECTION_CLOSED });
+      dispatch({ type: WS_CLEAR_ORDERS });
     };
-  }, [dispatch]);
+  }, []);
 
-  const orders = useSelector((state: RootState) => state.ws.orders) || [];
+  const orders = useSelector((state: RootState) => state.ws.orders) ?? [];
   const error = useSelector((state: RootState) => state.ws.error);
 
-  const sortedOrders = useMemo(
-    () => [...orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-    [orders]
-  );
+  const sortedOrders = useMemo(() => {
+    return [...orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [orders]);
 
   const openModal = useCallback(
     (order: IOrder) => {
@@ -45,7 +44,7 @@ export const Orders: React.FC = () => {
 
       <div className="max-h-[600px] overflow-y-auto space-y-4 pr-2">
         {sortedOrders.length > 0 &&
-          sortedOrders.map((order: IOrder) => (
+          sortedOrders.map((order) => (
             <div key={order._id} onClick={() => openModal(order)}>
               <OrdersItem order={order} />
             </div>
