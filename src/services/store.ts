@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import { rootReducer } from "./reducers/reducers";
+import { rootReducer } from "./reducers";
 import { socket } from "./middleware";
 import {
   WS_CLEAR_ORDERS,
