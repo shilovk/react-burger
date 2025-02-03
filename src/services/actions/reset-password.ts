@@ -1,4 +1,4 @@
-import type { AppDispatch } from "../store";
+import type { AppDispatch } from "../types";
 import { request } from "../../utils/api";
 
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";

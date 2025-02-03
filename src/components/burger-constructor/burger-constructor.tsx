@@ -1,34 +1,26 @@
 import React, { useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../services/reducers/reducers";
 import { addIngredient, setBun, removeIngredient, reorderIngredients } from "../../services/actions/burger-constructor";
 import ConstructorItem from "./constructor-item/constructor-item";
 import styles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Ingredient } from "../../services/actions/burger-constructor";
 import { createOrder } from "../../services/actions/order";
+import { RootState, useDispatch, useSelector } from "../../services/types";
 
 const BurgerConstructor = () => {
   const isAuth = !!sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { ingredients, bun } = useSelector((state: RootState) => state.burgerConstructor);
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const allIngredients: Ingredient[] = useSelector((state: RootState) => state.burgerIngredients.ingredients);
-
+  const allIngredients = useSelector((state: RootState) => state.burgerIngredients.ingredients);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [, dropBunTop] = useDrop({
     accept: "bun",
     drop: (item: { id: string }) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(setBun(item.id));
     },
   });
@@ -36,8 +28,6 @@ const BurgerConstructor = () => {
   const [, dropBunBottom] = useDrop({
     accept: "bun",
     drop: (item: { id: string }) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(setBun(item.id));
     },
   });
@@ -45,26 +35,18 @@ const BurgerConstructor = () => {
   const [, drop] = useDrop({
     accept: ["sauce", "main"],
     drop: (item: { id: string }) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(addIngredient(item.id));
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const selectedIngredients = useMemo<Ingredient[]>(() => {
-    return ingredients
-      .map((ingredient) => {
-        // Найти объект ингредиента по id
-        const foundIngredient = allIngredients.find((item) => item._id === ingredient.id);
-        // Если найден, добавить uniqueId
-        return foundIngredient ? { ...foundIngredient, uniqueId: ingredient.uniqueId } : undefined;
-      })
-      .filter((item): item is Ingredient => !!item); // Фильтруем undefined
+  const selectedIngredients = useMemo(() => {
+    return ingredients.map((ingredient) => ({
+      ...allIngredients.find((item) => item._id === ingredient.id)!,
+      uniqueId: ingredient.uniqueId,
+    }));
   }, [ingredients, allIngredients]);
 
-  const selectedBun = useMemo<Ingredient | null>(() => {
+  const selectedBun = useMemo(() => {
     return allIngredients.find((item) => item._id === bun) || null;
   }, [bun, allIngredients]);
 
@@ -87,8 +69,6 @@ const BurgerConstructor = () => {
 
     const ingredientIds = [selectedBun._id, ...ingredients.map((ingredient) => ingredient.id), selectedBun._id];
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(createOrder(ingredientIds));
     setModalOpen(true);
   };
@@ -134,11 +114,7 @@ const BurgerConstructor = () => {
             dragIcon
             extraClass="pb-2"
             moveIngredient={moveIngredient}
-            onRemove={() => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              dispatch(removeIngredient(item._id));
-            }}
+            onRemove={() => dispatch(removeIngredient(item._id))}
           />
         ))}
       </div>

@@ -1,4 +1,4 @@
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../types";
 import { request } from "../../utils/api";
 import { clearConstructor } from "./burger-constructor";
 import { resetIngredientCounts } from "./burger-ingredients";
@@ -28,7 +28,10 @@ export const createOrder = (ingredientIds: string[]) => (dispatch: AppDispatch) 
 
   request("orders", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: sessionStorage.getItem("accessToken") || "",
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ ingredients: ingredientIds }),
   })
     .then((data) => {

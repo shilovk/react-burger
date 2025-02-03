@@ -4,6 +4,7 @@ import {
   SET_BUN,
   REORDER_INGREDIENTS,
   CLEAR_CONSTRUCTOR,
+  BurgerConstructorActionTypes,
 } from "../actions/burger-constructor";
 
 interface BurgerConstructorState {
@@ -18,7 +19,7 @@ export const initialState: BurgerConstructorState = {
 
 export const burgerConstructorReducer = (
   state = initialState,
-  action: { type: string; payload?: any }
+  action: BurgerConstructorActionTypes
 ): BurgerConstructorState => {
   switch (action.type) {
     case ADD_INGREDIENT: {
@@ -28,23 +29,10 @@ export const burgerConstructorReducer = (
       };
     }
     case REMOVE_INGREDIENT: {
-      const ingredientIdToRemove = action.payload;
-
-      // Найдем индекс первого найденного ингредиента с таким ID
-      const indexToRemove = state.ingredients.findIndex((id) => id === ingredientIdToRemove);
-
-      // Если такой ингредиент найден, удалим его
-      if (indexToRemove !== -1) {
-        const updatedIngredients = [...state.ingredients];
-        updatedIngredients.splice(indexToRemove, 1);
-
-        return {
-          ...state,
-          ingredients: updatedIngredients,
-        };
-      }
-
-      return state;
+      return {
+        ...state,
+        ingredients: state.ingredients.filter((ingredient) => ingredient.id !== action.payload),
+      };
     }
     case SET_BUN: {
       return {

@@ -1,6 +1,5 @@
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../types";
 import { request } from "../../utils/api";
-import { NavigateFunction } from "react-router-dom";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

@@ -1,4 +1,4 @@
-import { SET_TAB } from "../actions/tab";
+import { SET_TAB, TabActionTypes } from "../actions/tab";
 
 interface TabState {
   title: string;
@@ -8,7 +8,7 @@ export const initialState: TabState = {
   title: "bun",
 };
 
-export const tabReducer = (state = initialState, action: any): TabState => {
+export const tabReducer = (state = initialState, action: TabActionTypes): TabState => {
   switch (action.type) {
     case SET_TAB:
       return {

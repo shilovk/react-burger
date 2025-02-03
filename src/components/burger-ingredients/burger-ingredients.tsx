@@ -1,13 +1,12 @@
 import React, { useRef, useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsItem from "./ingridients-item/ingredients-item";
-import { RootState } from "../../services/reducers/reducers";
 import { setTab } from "../../services/actions/tab";
 import { Ingredient } from "./burger-ingredients.types";
 import { useDrag } from "react-dnd";
+import { RootState, useDispatch, useSelector } from "../../services/types";
 
 const IngredientsItemDraggable = ({ ingredient }: { ingredient: Ingredient }) => {
   const [{ isDragging }, drag] = useDrag({
@@ -37,7 +36,7 @@ const BurgerIngredients = () => {
   const navigate = useNavigate();
 
   const tab = useSelector((state: RootState) => state.tab.title);
-  const ingredients = useSelector<RootState, Ingredient[]>((state) => state.burgerIngredients.ingredients);
+  const ingredients = useSelector((state: RootState) => state.burgerIngredients.ingredients);
 
   const bunRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);

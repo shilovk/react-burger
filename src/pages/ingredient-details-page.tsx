@@ -1,16 +1,14 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 import IngredientDetails from "../components/burger-ingredients/ingredient-details/ingredient-details";
-import { RootState } from "../services/reducers/reducers";
-import { Ingredient } from "../components/burger-ingredients/burger-ingredients.types";
+import { RootState, useSelector } from "../services/types";
 
 export const IngredientDetailsPage = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const ingredient = useSelector<RootState, Ingredient | undefined>((state) =>
+  const ingredient = useSelector((state: RootState) =>
     state.burgerIngredients.ingredients.find((item) => item._id === id)
   );
 

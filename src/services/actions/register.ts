@@ -1,4 +1,4 @@
-import type { AppDispatch } from "../store";
+import type { AppDispatch } from "../types";
 import { request } from "../../utils/api";
 
 export const REGISTER_REQUEST = "REGISTER_REQUEST";

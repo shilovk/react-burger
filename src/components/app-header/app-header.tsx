@@ -10,7 +10,7 @@ function AppHeader() {
       <nav className={styles["app-header__nav"]}>
         <div className={styles["app-header__left-section"]}>
           <HeaderItem extraClass={"pr-10"} icon={<BurgerIcon type="primary" />} title="Конструктор" route="/" />
-          <HeaderItem icon={<ListIcon type="secondary" />} title="Лента заказов" route="/orders" />
+          <HeaderItem icon={<ListIcon type="secondary" />} title="Лента заказов" route="/feed" />
         </div>
         <div className={styles["app-header__logo"]}>
           <Link to="/">

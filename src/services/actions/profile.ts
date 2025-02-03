@@ -1,5 +1,5 @@
 import { request } from "../../utils/api";
-import type { AppDispatch } from "../store";
+import type { AppDispatch } from "../types";
 import { SET_AUTH_STATE } from "./login";
 
 export const PROFILE_REQUEST = "PROFILE_REQUEST";

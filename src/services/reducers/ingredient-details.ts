@@ -1,8 +1,12 @@
-import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../actions/ingredient-details";
-import { IngredientDetails } from "../../components/burger-ingredients/ingredient-details/ingredient-details.types";
+import {
+  SET_INGREDIENT_DETAILS,
+  CLEAR_INGREDIENT_DETAILS,
+  IngredientDetailsActionTypes,
+} from "../actions/ingredient-details";
+import { Ingredient } from "../../components/burger-ingredients/burger-ingredients.types";
 
 interface IngredientDetailsState {
-  ingredient: IngredientDetails | null;
+  ingredient: Ingredient | null;
 }
 
 export const initialState: IngredientDetailsState = {
@@ -11,19 +15,21 @@ export const initialState: IngredientDetailsState = {
 
 export const ingredientDetailsReducer = (
   state = initialState,
-  action: { type: string; payload?: IngredientDetails }
+  action: IngredientDetailsActionTypes
 ): IngredientDetailsState => {
   switch (action.type) {
     case SET_INGREDIENT_DETAILS:
       return {
         ...state,
-        ingredient: action.payload || null,
+        ingredient: action.payload,
       };
+
     case CLEAR_INGREDIENT_DETAILS:
       return {
         ...state,
         ingredient: null,
       };
+
     default:
       return state;
   }
