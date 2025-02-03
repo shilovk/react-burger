@@ -1,11 +1,5 @@
-import {
-  ADD_INGREDIENT,
-  REMOVE_INGREDIENT,
-  SET_BUN,
-  REORDER_INGREDIENTS,
-  CLEAR_CONSTRUCTOR,
-  BurgerConstructorActionTypes,
-} from "../actions/burger-constructor";
+import { ADD_INGREDIENT, REMOVE_INGREDIENT, SET_BUN, REORDER_INGREDIENTS, CLEAR_CONSTRUCTOR } from "../constants";
+import type { BurgerConstructorActionTypes } from "../types";
 
 interface BurgerConstructorState {
   ingredients: { id: string; uniqueId: string }[];

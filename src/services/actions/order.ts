@@ -2,26 +2,7 @@ import { AppDispatch } from "../types";
 import { request } from "../../utils/api";
 import { clearConstructor } from "./burger-constructor";
 import { resetIngredientCounts } from "./burger-ingredients";
-
-export const CREATE_ORDER_SUCCESS = "CREATE_ORDER_SUCCESS";
-export const CREATE_ORDER_FAILURE = "CREATE_ORDER_FAILURE";
-export const CREATE_ORDER_REQUEST = "CREATE_ORDER_REQUEST";
-
-interface CreateOrderRequestAction {
-  type: typeof CREATE_ORDER_REQUEST;
-}
-
-interface CreateOrderSuccessAction {
-  type: typeof CREATE_ORDER_SUCCESS;
-  payload: { orderNumber: number };
-}
-
-interface CreateOrderFailureAction {
-  type: typeof CREATE_ORDER_FAILURE;
-  error: string;
-}
-
-export type OrderActionTypes = CreateOrderRequestAction | CreateOrderSuccessAction | CreateOrderFailureAction;
+import { CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILURE } from "../constants";
 
 export const createOrder = (ingredientIds: string[]) => (dispatch: AppDispatch) => {
   dispatch({ type: CREATE_ORDER_REQUEST });

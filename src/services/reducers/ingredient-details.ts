@@ -1,8 +1,5 @@
-import {
-  SET_INGREDIENT_DETAILS,
-  CLEAR_INGREDIENT_DETAILS,
-  IngredientDetailsActionTypes,
-} from "../actions/ingredient-details";
+import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../constants";
+import { IngredientDetailsActionTypes } from "../types";
 import { Ingredient } from "../../components/burger-ingredients/burger-ingredients.types";
 
 interface IngredientDetailsState {

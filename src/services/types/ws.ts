@@ -8,6 +8,15 @@ import {
 } from "../constants";
 import type { IOrdersResponse } from "./order";
 
+export type TWSStoreActions = {
+  wsClearOrders: typeof WS_CLEAR_ORDERS;
+  wsInit: typeof WS_CONNECTION_START;
+  onOpen: typeof WS_CONNECTION_SUCCESS;
+  onClose: typeof WS_CONNECTION_CLOSED;
+  onError: typeof WS_CONNECTION_ERROR;
+  onMessage: typeof WS_GET_ORDERS;
+};
+
 export interface IWSClearOrders {
   readonly type: typeof WS_CLEAR_ORDERS;
   readonly payload?: never;
@@ -40,7 +49,7 @@ export interface IWSGetOrdersAction {
   readonly payload: IOrdersResponse;
 }
 
-export type TWSActions =
+export type TWSActionsTypes =
   | IWSClearOrders
   | IWSConnectionStart
   | IWSConnectionSuccessAction

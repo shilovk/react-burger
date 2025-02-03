@@ -4,8 +4,8 @@ import {
   PROFILE_FAILURE,
   PROFILE_UPDATE_SUCCESS,
   PROFILE_LOGOUT,
-  ProfileActionTypes,
-} from "../actions/profile";
+} from "../constants";
+import { ProfileActionTypes } from "../types";
 
 interface ProfileState {
   isLoading: boolean;

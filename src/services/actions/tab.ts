@@ -1,11 +1,5 @@
-export const SET_TAB = "SET_TAB";
-
-interface SetTabAction {
-  type: typeof SET_TAB;
-  payload: string;
-}
-
-export type TabActionTypes = SetTabAction;
+import { SET_TAB } from "../constants";
+import { SetTabAction } from "../types";
 
 export const setTab = (tab: string): SetTabAction => ({
   type: SET_TAB,

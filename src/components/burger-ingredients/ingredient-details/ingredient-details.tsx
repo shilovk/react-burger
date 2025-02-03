@@ -20,6 +20,7 @@ const IngredientDetails = ({
 
   return (
     <div className={styles["ingredient-details__details"]}>
+      <div className="text text_type_main-medium">Детали ингридиента</div>
       <img src={image} alt={name} className={styles["ingredient-details__image"]} />
       <p className={`${styles["ingredient-details__name"]} text text_type_main-medium pb-5`}>{name}</p>
       {description && <p className={styles["ingredient-details__description"]}>{description}</p>}

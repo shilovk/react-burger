@@ -1,4 +1,5 @@
-import { SET_TAB, TabActionTypes } from "../actions/tab";
+import { SET_TAB } from "../constants";
+import type { TabActionTypes } from "../types";
 
 interface TabState {
   title: string;

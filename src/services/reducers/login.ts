@@ -1,4 +1,5 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, SET_AUTH_STATE, LoginActionTypes } from "../actions/login";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, SET_AUTH_STATE } from "../constants";
+import type { LoginActionTypes } from "../types";
 
 interface LoginState {
   isLoading: boolean;

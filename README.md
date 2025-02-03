@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# React Burger
+### App by React Yandex Course
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Running project at page: https://shilovk.github.io/react-burger/
 
 ## Available Scripts
 

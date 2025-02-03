@@ -1,4 +1,5 @@
-import { CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILURE, OrderActionTypes } from "../actions/order";
+import { CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILURE } from "../constants";
+import type { OrderActionTypes } from "../types";
 
 interface OrderState {
   orderNumber: number | null;

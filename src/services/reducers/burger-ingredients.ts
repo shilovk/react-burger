@@ -5,11 +5,11 @@ import {
   INCREMENT_INGREDIENT_COUNT,
   DECREMENT_INGREDIENT_COUNT,
   RESET_INGREDIENT_COUNTS,
-  BurgerIngredientsActionTypes,
-} from "../actions/burger-ingredients";
-import { Ingredient } from "../../components/burger-ingredients/burger-ingredients.types";
+} from "../constants";
+import type { BurgerIngredientsActionTypes } from "../types";
+import type { Ingredient } from "../../components/burger-ingredients/burger-ingredients.types";
 
-interface BurgerIngredientsState {
+export interface BurgerIngredientsState {
   ingredients: (Ingredient & { count: number })[];
   isLoading: boolean;
   hasError: boolean;
@@ -26,70 +26,47 @@ export const burgerIngredientsReducer = (
   action: BurgerIngredientsActionTypes
 ): BurgerIngredientsState => {
   switch (action.type) {
-    case GET_INGREDIENTS_REQUEST: {
+    case GET_INGREDIENTS_REQUEST:
       return {
         ...state,
         isLoading: true,
         hasError: false,
       };
-    }
-    case GET_INGREDIENTS_SUCCESS: {
-      const ingredientsWithCount = action.payload.map((ingredient: Ingredient) => ({
-        ...ingredient,
-        count: 0,
-      }));
+    case GET_INGREDIENTS_SUCCESS:
       return {
         ...state,
-        ingredients: ingredientsWithCount,
+        ingredients: action.payload.map((ingredient) => ({
+          ...ingredient,
+          count: 0,
+        })),
         isLoading: false,
         hasError: false,
       };
-    }
-    case GET_INGREDIENTS_FAILED: {
+    case GET_INGREDIENTS_FAILED:
       return {
         ...state,
         isLoading: false,
         hasError: true,
       };
-    }
-    case INCREMENT_INGREDIENT_COUNT: {
+    case INCREMENT_INGREDIENT_COUNT:
       return {
         ...state,
-        ingredients: state.ingredients.map((ingredient) => {
-          if (ingredient._id === action.payload.id) {
-            const incrementBy = action.payload.incrementBy;
-            const currentCount = ingredient.count ?? 0;
-            const newCount =
-              ingredient.type === "bun" ? Math.min(currentCount + incrementBy, 2) : currentCount + incrementBy;
-
-            return {
-              ...ingredient,
-              count: newCount,
-            };
-          }
-          return ingredient;
-        }),
+        ingredients: state.ingredients.map((ingredient) =>
+          ingredient._id === action.payload.id
+            ? { ...ingredient, count: ingredient.count + action.payload.incrementBy }
+            : ingredient
+        ),
       };
-    }
-    case DECREMENT_INGREDIENT_COUNT: {
+    case DECREMENT_INGREDIENT_COUNT:
       return {
         ...state,
-        ingredients: state.ingredients.map((ingredient) => {
-          if (ingredient._id === action.payload.id) {
-            const decrementBy = action.payload.decrementBy;
-            const currentCount = ingredient.count ?? 0;
-            const newCount = Math.max(currentCount - decrementBy, 0);
-
-            return {
-              ...ingredient,
-              count: newCount,
-            };
-          }
-          return ingredient;
-        }),
+        ingredients: state.ingredients.map((ingredient) =>
+          ingredient._id === action.payload.id
+            ? { ...ingredient, count: Math.max(ingredient.count - action.payload.decrementBy, 0) }
+            : ingredient
+        ),
       };
-    }
-    case RESET_INGREDIENT_COUNTS: {
+    case RESET_INGREDIENT_COUNTS:
       return {
         ...state,
         ingredients: state.ingredients.map((ingredient) => ({
@@ -97,9 +74,7 @@ export const burgerIngredientsReducer = (
           count: 0,
         })),
       };
-    }
-    default: {
+    default:
       return state;
-    }
   }
 };

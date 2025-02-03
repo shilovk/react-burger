@@ -1,25 +1,6 @@
 import type { AppDispatch } from "../types";
 import { request } from "../../utils/api";
-
-export const REGISTER_REQUEST = "REGISTER_REQUEST";
-export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
-export const REGISTER_FAILURE = "REGISTER_FAILURE";
-
-interface RegisterRequestAction {
-  type: typeof REGISTER_REQUEST;
-}
-
-interface RegisterSuccessAction {
-  type: typeof REGISTER_SUCCESS;
-  payload: { accessToken: string; refreshToken: string };
-}
-
-interface RegisterFailureAction {
-  type: typeof REGISTER_FAILURE;
-  error: string;
-}
-
-export type RegisterActionTypes = RegisterRequestAction | RegisterSuccessAction | RegisterFailureAction;
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from "../constants";
 
 export const register = (email: string, password: string, name: string) => (dispatch: AppDispatch) => {
   dispatch({ type: REGISTER_REQUEST });
