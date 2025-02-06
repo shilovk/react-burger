@@ -1,9 +1,5 @@
-import {
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILURE,
-  ResetPasswordActionTypes,
-} from "../actions/reset-password";
+import { RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAILURE } from "../constants";
+import type { ResetPasswordActionTypes } from "../types";
 
 interface ResetPasswordState {
   isLoading: boolean;

@@ -1,0 +1,3 @@
+export const CREATE_ORDER_SUCCESS = "CREATE_ORDER_SUCCESS" as const;
+export const CREATE_ORDER_FAILURE = "CREATE_ORDER_FAILURE" as const;
+export const CREATE_ORDER_REQUEST = "CREATE_ORDER_REQUEST" as const;

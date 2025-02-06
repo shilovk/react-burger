@@ -64,6 +64,7 @@ const AppRoutes = ({ isAuth }: { isAuth: boolean }) => {
     <>
       <Routes location={backgroundLocation || location}>
         <Route path="/" element={<Main />} />
+        <Route path="/react-burger/" element={<Main />} />
         <Route path="/login" element={!isAuth ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuth ? <Register /> : <Navigate to="/" />} />
         <Route path="/forgot-password" element={!isAuth ? <ForgotPassword /> : <Navigate to="/" />} />

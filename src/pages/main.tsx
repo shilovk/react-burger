@@ -24,7 +24,7 @@ export function Main() {
     <DndProvider backend={HTML5Backend}>
       <div className={styles.app}>
         <main className={`${styles.app__main} pl-10 pr-7`}>
-          <div className={styles["burger-ingredients"]}>
+          <div className={styles["app"]}>
             <BurgerIngredients />
           </div>
           <div className={styles["burger-constructor"]}>

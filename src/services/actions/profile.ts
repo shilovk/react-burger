@@ -1,42 +1,13 @@
 import { request } from "../../utils/api";
 import type { AppDispatch } from "../types";
-import { SET_AUTH_STATE } from "./login";
-
-export const PROFILE_REQUEST = "PROFILE_REQUEST";
-export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
-export const PROFILE_FAILURE = "PROFILE_FAILURE";
-export const PROFILE_UPDATE_SUCCESS = "PROFILE_UPDATE_SUCCESS";
-export const PROFILE_LOGOUT = "PROFILE_LOGOUT";
-
-interface ProfileRequestAction {
-  type: typeof PROFILE_REQUEST;
-}
-
-interface ProfileSuccessAction {
-  type: typeof PROFILE_SUCCESS;
-  payload: { name: string; email: string };
-}
-
-interface ProfileUpdateSuccessAction {
-  type: typeof PROFILE_UPDATE_SUCCESS;
-  payload: { name: string; email: string };
-}
-
-interface ProfileFailureAction {
-  type: typeof PROFILE_FAILURE;
-  error: string | null;
-}
-
-interface ProfileLogoutAction {
-  type: typeof PROFILE_LOGOUT;
-}
-
-export type ProfileActionTypes =
-  | ProfileRequestAction
-  | ProfileSuccessAction
-  | ProfileUpdateSuccessAction
-  | ProfileFailureAction
-  | ProfileLogoutAction;
+import {
+  PROFILE_LOGOUT,
+  PROFILE_FAILURE,
+  PROFILE_SUCCESS,
+  PROFILE_UPDATE_SUCCESS,
+  PROFILE_REQUEST,
+  SET_AUTH_STATE,
+} from "../constants";
 
 export const updateProfile = (name: string, email: string, password: string) => (dispatch: AppDispatch) => {
   dispatch({ type: PROFILE_REQUEST });

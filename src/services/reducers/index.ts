@@ -9,7 +9,7 @@ import { resetPasswordReducer, initialState as initialStateResetPassword } from 
 import { loginReducer, initialState as initialStateLogin } from "./login";
 import { forgotPasswordReducer, initialState as initialStateForgotPassword } from "./forgot-password";
 import { profileReducer, initialState as initialStateProfile } from "./profile";
-import { wsReducer, initialState as initialStateWS } from "./ws-reducer";
+import { ws, initialState as initialStateWS } from "./ws";
 
 export const initialStateRoot = {
   burgerIngredients: initialStateBurgerIngredients,
@@ -36,5 +36,5 @@ export const rootReducer = combineReducers({
   login: loginReducer,
   forgotPassword: forgotPasswordReducer,
   profile: profileReducer,
-  ws: wsReducer,
+  ws: ws,
 });

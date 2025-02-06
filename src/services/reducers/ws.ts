@@ -5,14 +5,14 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
 } from "../constants";
-import type { IOrdersResponse, TWSActions } from "../types";
+import type { IOrdersResponse, TWSActionsTypes } from "../types";
 
 type TWSState = {
   wsConnected: boolean;
   orders: IOrdersResponse["orders"];
   total: number;
   totalToday: number;
-  error?: Event;
+  error?: Event | Error;
 };
 
 export const initialState: TWSState = {
@@ -22,7 +22,7 @@ export const initialState: TWSState = {
   totalToday: 0,
 };
 
-export const wsReducer = (state = initialState, action: TWSActions): TWSState => {
+export const ws = (state = initialState, action: TWSActionsTypes): TWSState => {
   switch (action.type) {
     case WS_CLEAR_ORDERS:
       return {
@@ -42,7 +42,7 @@ export const wsReducer = (state = initialState, action: TWSActions): TWSState =>
     case WS_CONNECTION_ERROR:
       return {
         ...state,
-        error: { ...action.payload },
+        error: action.payload,
         wsConnected: false,
       };
 

@@ -107,7 +107,7 @@ const BurgerIngredients = () => {
   }, [ingredients]);
 
   return (
-    <section className={styles["burger-ingredients"]}>
+    <section className={styles["app"]}>
       <div className="text text_type_main-large pt-7 pb-5">Соберите бургер</div>
       <div className={styles["burger-ingredients__tabs"]}>
         <Tab value="bun" active={tab === "bun"} onClick={() => scrollToTab("bun")}>

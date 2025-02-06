@@ -1,4 +1,5 @@
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, RegisterActionTypes } from "../actions/register";
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from "../constants";
+import type { RegisterActionTypes } from "../types";
 
 interface RegisterState {
   isLoading: boolean;

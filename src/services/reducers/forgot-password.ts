@@ -1,9 +1,5 @@
-import {
-  FORGOT_PASSWORD_REQUEST,
-  FORGOT_PASSWORD_SUCCESS,
-  FORGOT_PASSWORD_FAILURE,
-  ForgotPasswordActionTypes,
-} from "../actions/forgot-password";
+import { FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAILURE } from "../constants";
+import { ForgotPasswordActionTypes } from "../types";
 
 interface ForgotPasswordState {
   isLoading: boolean;
